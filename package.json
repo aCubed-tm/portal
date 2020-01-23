@@ -3,13 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "serve": "vue-cli-service serve --fix",
+    "build": "vue-cli-service build --fix",
+    "lint": "vue-cli-service lint --fix"
   },
   "dependencies": {
     "bootstrap": "^4.4.1",
     "core-js": "^3.4.4",
+    "dotenv": "^8.2.0",
     "vue": "^2.6.10",
     "vue-router": "^3.1.3",
     "vuex": "^3.1.2"
