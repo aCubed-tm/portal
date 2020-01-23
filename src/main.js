@@ -11,7 +11,7 @@ new Vue({
   render: h => h(App),
 
   mounted() {
-    this.init();
+    this.calculateViewportHeight();
 
     window.addEventListener('resize', () => { this.calculateViewportHeight(); });
     window.addEventListener('orientationchange', () => { this.calculateViewportHeight(); });
