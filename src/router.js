@@ -7,11 +7,21 @@ function lazyLoad(view) {
   return () => import(`@/views/${view}.vue`);
 }
 
+const authGuard = (to, from, next) => {
+  next('/auth');
+};
+
 const routes = [
   {
     path: '/',
-    name: 'account',
+    name: 'profile',
     component: lazyLoad('profile/show'),
+    beforeEnter: authGuard,
+  },
+  {
+    path: '/auth',
+    name: 'auth',
+    component: lazyLoad('auth/login'),
   },
 ];
 
