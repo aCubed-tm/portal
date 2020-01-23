@@ -3,17 +3,20 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
+function lazyLoad(view) {
+  return () => import(`@/views/${view}.vue`);
+}
+
 const routes = [
   {
     path: '/',
     name: 'account',
-    component: import(/* webpackChunkName: "profile" */ './views/profile/show.vue').default,
+    component: lazyLoad('profile/show'),
   },
 ];
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
   routes,
 });
 
