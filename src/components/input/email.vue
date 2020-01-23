@@ -2,11 +2,13 @@
   <div class="form-group">
     <label v-if="label" :for="id" v-html="label"></label>
     <input :id="id" type="email" class="form-control" :placeholder="placeholder"
+      :value="localValue" @change="updateLocalValue($event)"
       :disabled="disabled" :readonly="readonly">
   </div>
 </template>
 
 <script>
+import input from './_input';
 
 const generateId = (length = 20) => {
   let result = '';
@@ -18,6 +20,8 @@ const generateId = (length = 20) => {
 };
 
 export default {
+  mixins: [input],
+
   props: {
     id: {
       default: generateId(),
