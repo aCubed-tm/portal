@@ -9,4 +9,19 @@ new Vue({
   router,
   store,
   render: h => h(App),
+
+  mounted() {
+    this.init();
+
+    window.addEventListener('resize', () => { this.calculateViewportHeight(); });
+    window.addEventListener('orientationchange', () => { this.calculateViewportHeight(); });
+  },
+
+  methods: {
+    calculateViewportHeight() {
+      const vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+      this.isMobile = window.innerWidth < 767.98;
+    },
+  },
 }).$mount('#app');
