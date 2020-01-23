@@ -1,5 +1,5 @@
-<style lang="scss" scoped>
-  @import './assets/styles/main';
+<style lang="scss">
+  @import '@/assets/styles/main';
 
   #app {
       min-height: 100vh;
