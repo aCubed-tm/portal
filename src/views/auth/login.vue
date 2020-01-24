@@ -10,14 +10,6 @@
 
   h1 { font-size: 22px; }
   form { width: 330px; }
-
-  .disclaimer{
-    font-size: 12px;
-    padding-top: 100px;
-    p {
-      margin-bottom: 5px;
-    }
-  }
 </style>
 
 <template>
@@ -107,7 +99,7 @@ export default {
     validateEmail() {
       this.processed = true;
       this.processing = true;
-
+      
       if (this.formData.email === 'test@test.com') { //! Fake invited user login
         this.userRecognized = true;
         this.title = 'Nice to meet you!';
