@@ -1,10 +1,15 @@
 import Vue from 'vue';
+import Vuex from 'vuex';
 import Vuelidate from 'vuelidate';
+import axios from 'axios';
 import App from './App.vue';
 
 import router from './router';
 import store from './store';
 
+axios.defaults.baseURL = 'api.acubed.app';
+
+Vue.use(Vuex);
 Vue.use(Vuelidate);
 Vue.config.productionTip = false;
 
