@@ -3,48 +3,30 @@ import VueRouter from 'vue-router';
 
 Vue.use(VueRouter);
 
-/**
- * Lazy-loads view components, but with better UX. A loading view
- * will be used if the component takes a while to load, falling
- * back to a timeout view in case the page fails to load. You can
- * use this component to lazy-load a route with:
- *
- * component: () => lazyLoadView(import('@views/my-view'))
- *
- * @param {AsyncView} The view component
- */
-const lazyLoadView = (AsyncView) => {
-  const AsyncHandler = () => ({
-      component: AsyncView,
-      delay: 400,
-      timeout: 10000,
-  });
+function lazyLoad(view) {
+  return () => import(`@/views/${view}.vue`);
+}
 
-  return Promise.resolve({
-      functional: true,
-      render(h, { data, children }) {
-          return h(AsyncHandler, data, children);
-      },
-  });
-};
-
-
-const loadView = (view) => {
-  const path = `@/views/${view}.vue`;
-  return () => lazyLoadView(import(path));
+const authGuard = (to, from, next) => {
+  next('/auth');
 };
 
 const routes = [
   {
     path: '/',
-    name: 'account',
-    component: loadView('profile/show'),
+    name: 'profile',
+    component: lazyLoad('profile/show'),
+    beforeEnter: authGuard,
+  },
+  {
+    path: '/auth',
+    name: 'auth',
+    component: lazyLoad('auth/login'),
   },
 ];
 
 const router = new VueRouter({
   mode: 'history',
-  base: process.env.BASE_URL,
   routes,
 });
 

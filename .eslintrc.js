@@ -13,6 +13,8 @@ module.exports = {
     'template-curly-spacing': 'off',
     indent: 'off',
     'linebreak-style': 0,
+    'no-plusplus': 'off',
+    'arrow-parens': 'off',
   },
   parserOptions: {
     parser: 'babel-eslint',
