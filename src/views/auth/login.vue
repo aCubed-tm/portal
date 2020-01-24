@@ -29,29 +29,35 @@
           <p v-if="subtitle" class="mt-1">{{ subtitle }}</p>
         </header>
 
-        <form v-if="!userRecognized" @submit.prevent="validateEmail" novalidate>
-          <email v-model="formData.email" label="Your email address"
-            placeholder="john.doe@example.com"/>
-          <input type="submit" value="Continue" class="btn btn-primary float-right">
-        </form>
+        <div v-if="!emailSend">
+          <form v-if="!userRecognized" @submit.prevent="validateEmail" novalidate>
+            <email v-model="formData.email" label="Your email address"
+              placeholder="john.doe@example.com"/>
+            <input type="submit" value="Continue" class="btn btn-primary float-right">
+          </form>
 
-        <form v-if="userRecognized && !userRegistered" @submit.prevent="registerPassword" novalidate>
-          <email label="Your email address" disabled=true change=true @go-back="goBack"
-            :placeholder="formData.email"/>
-          <password v-model="formData.password" label="Your password"
-            placeholder="Create your password"/>
-          <input type="submit" value="Register" class="btn btn-primary float-right">
-        </form>
+          <form v-if="userRecognized && !userRegistered" @submit.prevent="registerPassword" novalidate>
+            <email label="Your email address" disabled=true change=true @go-back="goBack"
+              :placeholder="formData.email"/>
+            <password v-model="formData.password" label="Your password"
+              placeholder="Create your password"/>
+            <input type="submit" value="Register" class="btn btn-primary float-right">
+          </form>
 
-        <form v-if="userRecognized && userRegistered" @submit.prevent="validatePassword" novalidate>
-          <password v-model="formData.password" label="Your password"
-            placeholder="Enter your password"/>
-          <input type="submit" value="Login" class="btn btn-primary float-right">
-        </form>
+          <form v-if="userRecognized && userRegistered" @submit.prevent="validatePassword" novalidate>
+            <password v-model="formData.password" label="Your password"
+              placeholder="Enter your password"/>
+            <input type="submit" value="Login" class="btn btn-primary float-right">
+          </form>
 
-        <div v-if="disclaimer" id="disclaimer" class="text-secondary">
-          <p>Disclaimer:</p>
-          <p>For demonstrative purposes, registration will be limited to a select number of email addresses.</p>
+          <div v-if="disclaimer" id="disclaimer" class="text-secondary">
+            <p>Disclaimer:</p>
+            <p>For demonstrative purposes, registration will be limited to a select number of email addresses.</p>
+          </div>
+        </div>
+
+        <div v-else>
+
         </div>
       </div>
     </div>
@@ -78,16 +84,11 @@ export default {
       userRegistered: false,
       title: 'Sign in to Portal',
       subtitle: null,
+      emailSend: false,
     };
   },
 
   methods: {
-    changeEmail() {
-      this.processed = false;
-      this.processing = false;
-      this.userRecognized = false;
-      this.userRegistered = false;
-    },
     validateEmail() {
       this.processed = true;
       this.processing = true;
@@ -104,6 +105,18 @@ export default {
         this.title = 'Great to see you!';
         this.subtitle = this.formData.email;
       }
+
+      this.processing = false;
+    },
+    registerPassword() {
+      this.processing = true;
+
+
+      this.processing = false;
+    },
+    validatePassword() {
+      this.processing = true;
+
 
       this.processing = false;
     },
