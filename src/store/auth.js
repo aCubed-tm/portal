@@ -26,9 +26,9 @@ export default {
     },
 
     // Set profile state
-    SET_PROFILE(state, profile) {
-      state.profile.name = profile.name;
-      state.profile.firstname = profile.firstname;
+    SET_PROFILE(state, { firstname, name }) {
+      state.profile.name = name;
+      state.profile.firstname = firstname;
     },
   },
   actions: {
@@ -73,11 +73,12 @@ export default {
     // add credentials to profile
     // firstname: firstname given by user
     // name: name given by user
-    // return True if credentials are set
+    // return commit to SET_PROFILE if credentials are set
     // return False if credentials set has failed
-    async addProfileCredentials(_, { firstname, name }) {
+    async addProfileCredentials({ commit }, { firstname, name }) {
       const response = await axios.post('', { firstname, name });
       if (response.data) {
+        commit('SET_PROFILE', { firstname, name });
         return true;
       }
       return false;
