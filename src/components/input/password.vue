@@ -1,21 +1,7 @@
-<style lang="scss" skoped>
-  #change {
-    font-size: .8em;
-    margin-bottom: 0px;
-    text-decoration: underline;
-    :hover {
-      color: rgb(167, 39, 86);
-    }
-  }
-</style>
-
 <template>
   <div class="form-group">
     <label v-if="label" :for="id" v-html="label"></label>
-    <div v-if="change" class="float-right text-primary" id="change" v-on:click="goBack">
-      <p>Change</p>
-    </div>
-    <input :id="id" type="email" class="form-control" :placeholder="placeholder"
+    <input :id="id" type="password" class="form-control" :placeholder="placeholder"
       :value="localValue" @change="updateLocalValue($event)"
       :disabled="disabled" :readonly="readonly">
   </div>
@@ -51,14 +37,6 @@ export default {
     },
     readonly: {
       default: false,
-    },
-    change: {
-      default: false,
-    },
-  },
-  methods: {
-    goBack() {
-        this.$emit('go-back');
     },
   },
 };
