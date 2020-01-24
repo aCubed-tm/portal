@@ -1,11 +1,15 @@
 <style lang="scss" skoped>
-  #wrapper .container-fluid {
-    background: black;
-    min-height: calc(var(--vh, 1vh) * 100);
-  }
+#wrapper .container-fluid {
+  background: black;
+  min-height: calc(var(--vh, 1vh) * 100);
+}
 
-  h1 { font-size: 22px; }
-  form { min-width: 330px; }
+h1 {
+  font-size: 22px;
+}
+form {
+  min-width: 330px;
+}
 </style>
 
 <template>
@@ -18,11 +22,13 @@
         </header>
 
         <form v-if="!userRecognized" @submit.prevent="validateEmail" novalidate>
-          <email v-model="formData.email" label="Your email address"
-            placeholder="john.doe@example.com"/>
-          <input type="submit" value="Continue" class="btn btn-primary float-right">
+          <email
+            v-model="formData.email"
+            label="Your email address"
+            placeholder="john.doe@example.com"
+          />
+          <input type="submit" value="Continue" class="btn btn-primary float-right" />
         </form>
-
       </div>
     </div>
   </div>
@@ -57,10 +63,10 @@ export default {
     validateEmail() {
       this.processed = true;
       this.processing = true;
-        // Perform user lookup
-        this.userRecognized = true;
-        this.userRegistered = true;
-        this.processing = false;
+      // Perform user lookup
+      this.userRecognized = true;
+      this.userRegistered = true;
+      this.processing = false;
     },
   },
 };
