@@ -8,10 +8,9 @@
   }
 
   h1 { font-size: 22px; }
-  form { min-width: 330px; }
+  form { width: 330px; }
 
-  #disclaimer{
-    width: 330px;
+  .disclaimer{
     font-size: 12px;
     padding-top: 100px;
     p {
@@ -42,6 +41,11 @@
             <password v-model="formData.password" label="Your password"
               placeholder="Create your password"/>
             <input type="submit" value="Register" class="btn btn-primary float-right">
+
+            <div class="text-secondary small pt-5">
+              <p>Disclaimer:</p>
+              <p>For demonstrative purposes, registration will be limited to a select number of email addresses.</p>
+            </div>
           </form>
 
           <form v-if="userRecognized && userRegistered" @submit.prevent="validatePassword" novalidate>
@@ -49,11 +53,6 @@
               placeholder="Enter your password"/>
             <input type="submit" value="Login" class="btn btn-primary float-right">
           </form>
-
-          <div v-if="disclaimer" id="disclaimer" class="text-secondary">
-            <p>Disclaimer:</p>
-            <p>For demonstrative purposes, registration will be limited to a select number of email addresses.</p>
-          </div>
         </div>
 
         <div v-else>
@@ -75,7 +74,6 @@ export default {
     return {
       processed: false,
       processing: false,
-      disclaimer: false,
       formData: {
         email: '',
         password: '',
@@ -98,7 +96,6 @@ export default {
         this.userRegistered = false;
         this.title = 'Nice to meet you!';
         this.subtitle = 'You were invited to create an account.';
-        this.disclaimer = true;
       } else { //! Fake existing user login
         this.userRecognized = true;
         this.userRegistered = true;
@@ -127,7 +124,6 @@ export default {
       this.userRegistered = false;
       this.title = 'Sign in to Portal';
       this.subtitle = '';
-      this.disclaimer = false;
 
       this.processing = false;
     },
