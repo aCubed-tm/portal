@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export default {
+  namespaced: true,
   state: {
     email: null,
     profile: {
@@ -26,9 +27,9 @@ export default {
     },
 
     // Set profile state
-    SET_PROFILE(state, { firstname, name }) {
-      state.profile.name = name;
-      state.profile.firstname = firstname;
+    SET_PROFILE(state, profile) {
+      state.profile.name = profile.name;
+      state.profile.firstname = profile.firstname;
     },
   },
   actions: {
@@ -36,10 +37,10 @@ export default {
     // check if email is already registered
     // email: email value given by user
     // returns commit to SET_EMAIL
-    async checkEmailRegistered({ commit }, email) {
+    async checkEmailRegistered(_, email) {
       const response = await axios.get('', email);
-      if (response.data) {
-        return commit('SET_EMAIL', response.data);
+      if (!response.data.error) {
+        return response.data.value;
       }
       return null;
     },
@@ -47,12 +48,15 @@ export default {
     // check if password is correct
     // email: email value given by user
     // password: password given by user
+    // set email in state + try to get profile credentials
     // returns True if authenticate is successfull
     // returns False if authenticate has failed
-    async authenticate(_, { email, password }) {
+    async authenticate({ commit, dispatch }, { email, password }) {
       const response = await axios.post('', { email, password });
-      if (response.data) {
-        return true;
+      if (!response.data.error && response.data.value) {
+        commit('SET_EMAIL', response.data.value.email);
+        dispatch('getProfileCredentials', response.data.value.email);
+        return response.data.value;
       }
       return false;
     },
@@ -64,8 +68,8 @@ export default {
     // return False if password set has failed
     async createPassword(_, { email, password }) {
       const response = await axios.post('', { email, password });
-      if (response.data) {
-        return true;
+      if (!response.data.error) {
+        return response.data.value;
       }
       return false;
     },
@@ -77,9 +81,22 @@ export default {
     // return False if credentials set has failed
     async addProfileCredentials({ commit }, { firstname, name }) {
       const response = await axios.post('', { firstname, name });
-      if (response.data) {
-        commit('SET_PROFILE', { firstname, name });
+      if (!response.data.error && response.data.value) {
+        const profile = { firstname, name };
+        commit('SET_PROFILE', profile);
         return true;
+      }
+      return false;
+    },
+
+    // get profile credentials when email is registered
+    // email: given by state
+    // return commit to SET PROFILE
+    async getProfileCredentials({ commit }, email) {
+      const response = await axios.post('', { email });
+      if (!response.data.error) {
+        const profile = { firstname: response.data.value.firstname, name: response.data.value.name };
+        return commit('SET_PROFILE', profile);
       }
       return false;
     },
