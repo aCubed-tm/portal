@@ -112,6 +112,9 @@ export default {
 
       this.userRecognized = false;
       this.userRegistered = false;
+      this.title = 'Sign in to Portal';
+      this.subtitle = '';
+      this.disclaimer = false;
 
       this.processing = false;
     },
