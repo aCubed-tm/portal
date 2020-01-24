@@ -1,7 +1,8 @@
 <style lang="scss" skoped>
   #wrapper .container-fluid {
     background: rgb(11,4,37);
-    background: radial-gradient(200% 150% ellipse at 50% 215%, rgba(190,100,154,1), rgba(11,4,37,1));
+    background: radial-gradient(200% 150% ellipse at 50% 215%,
+     rgba(190,100,154,1), rgba(11,4,37,1));
     background-repeat: no-repeat;
     background-attachment: fixed;
     min-height: calc(var(--vh, 1vh) * 100);
@@ -35,7 +36,8 @@
             <input type="submit" value="Continue" class="btn btn-primary float-right">
           </form>
 
-          <form v-if="userRecognized && !userRegistered" @submit.prevent="registerPassword" novalidate>
+          <form v-if="userRecognized && !userRegistered"
+          @submit.prevent="registerPassword" novalidate>
             <email label="Your email address" disabled=true change=true @go-back="goBack"
               :placeholder="formData.email"/>
             <password v-model="formData.password" label="Your password"
@@ -48,15 +50,25 @@
             </div>
           </form>
 
-          <form v-if="userRecognized && userRegistered" @submit.prevent="validatePassword" novalidate>
+          <form v-if="userRecognized && userRegistered && !userFirstRegister"
+          @submit.prevent="validatePassword" novalidate>
             <password v-model="formData.password" label="Your password"
               placeholder="Enter your password"/>
             <input type="submit" value="Login" class="btn btn-primary float-right">
           </form>
+
+          <form v-if="userRecognized && userRegistered && userFirstRegister"
+          @submit.prevent="registerName" novalidate>
+            <textInput v-model="formData.firstname" label="Your firstname"
+              placeholder="Enter your firstname"/>
+            <textInput v-model="formData.name" label="Your lastname"
+              placeholder="Enter your lastname"/>
+            <input type="submit" value="Continue" class="btn btn-primary float-right">
+          </form>
         </div>
 
-        <div v-else>
-
+        <div v-else class="text-center mt-5">
+          <img src="images/mailSent.svg" height="120px" alt="mail sent image"/>
         </div>
       </div>
     </div>
@@ -64,11 +76,13 @@
 </template>
 
 <script>
+//* Imports
 import email from '@/components/input/email.vue';
 import password from '@/components/input/password.vue';
+import textInput from '@/components/input/text.vue';
 
 export default {
-  components: { email, password },
+  components: { email, password, textInput },
 
   data() {
     return {
@@ -77,9 +91,12 @@ export default {
       formData: {
         email: '',
         password: '',
+        firstname: '',
+        name: '',
       },
       userRecognized: false,
       userRegistered: false,
+      userFirstRegister: false,
       title: 'Sign in to Portal',
       subtitle: null,
       emailSend: false,
@@ -93,7 +110,6 @@ export default {
 
       if (this.formData.email === 'test@test.com') { //! Fake invited user login
         this.userRecognized = true;
-        this.userRegistered = false;
         this.title = 'Nice to meet you!';
         this.subtitle = 'You were invited to create an account.';
       } else { //! Fake existing user login
@@ -108,12 +124,16 @@ export default {
     registerPassword() {
       this.processing = true;
 
+      this.emailSend = true;
 
       this.processing = false;
     },
     validatePassword() {
       this.processing = true;
 
+      this.title = 'We would love to know your name,';
+      this.subtitle = 'so we can address you more appropriately.';
+      this.userFirstRegister = true;
 
       this.processing = false;
     },
@@ -122,8 +142,10 @@ export default {
 
       this.userRecognized = false;
       this.userRegistered = false;
+      this.userFirstRegister = false;
       this.title = 'Sign in to Portal';
       this.subtitle = '';
+      this.emailSend = false;
 
       this.processing = false;
     },
