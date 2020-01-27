@@ -43,9 +43,8 @@ new Vue({
       AuthService.setAuthorizationHeader();
 
       AuthService.renew()
-        .then((response) => {
+        .then(() => {
           // TODO: get user data
-          console.log(response);
         })
         .catch(() => { AuthService.logout(); });
     }
