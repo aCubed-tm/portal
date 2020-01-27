@@ -9,7 +9,13 @@
   }
 
   h1 { font-size: 22px; }
-  form { width: 330px; }
+  form, .disclaimer {
+    width: 80vw;
+    @media screen and (min-width:350px){
+      width: 330px;
+    }
+  }
+  .disclaimer { transform:translateY(150px); }
 </style>
 
 <template>
@@ -36,9 +42,14 @@
               placeholder="Create your password"/>
             <input type="submit" value="Register" class="btn btn-primary float-right">
 
-            <div class="text-secondary small pt-5">
-              <p>Disclaimer:</p>
-              <p>For demonstrative purposes, registration will be limited to a select number of email addresses.</p>
+            <span class="clearfix"></span>
+
+            <div class="disclaimer position-absolute">
+              <div class="text-secondary text-white-50">
+                <h2 class="small font-weight-bold">Disclaimer</h2>
+                <p class="small">For demonstrative purposes, registration will be limited
+                  to a select number of email addresses.</p>
+              </div>
             </div>
           </form>
 
@@ -99,7 +110,7 @@ export default {
     validateEmail() {
       this.processed = true;
       this.processing = true;
-      
+
       if (this.formData.email === 'test@test.com') { //! Fake invited user login
         this.userRecognized = true;
         this.title = 'Nice to meet you!';

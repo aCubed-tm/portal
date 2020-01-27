@@ -38,3 +38,6 @@ $input-color:           $white !default;
 $input-bg:              transparentize($white, 0.88) !default;
 $input-border-color:    transparentize($white, 0.79) !default;
 $input-disabled-bg:     transparentize($white, 0.80) !default;
+
+$input-btn-padding-y:         .67rem !default;
+$input-btn-padding-x:         .85rem !default;
