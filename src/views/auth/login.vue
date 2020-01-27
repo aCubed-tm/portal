@@ -27,7 +27,7 @@
         </header>
 
         <div v-if="!emailSend">
-          <ValidationObserver v-slot="{ invalid }">
+          <ValidationObserver ref="observer">
             <form v-if="!userRecognized" @submit.prevent="validateEmail"
             novalidate>
               <ValidationProvider name="email" rules="required|email" v-slot="{ errors }">
@@ -36,8 +36,7 @@
               </ValidationProvider>
 
               <input type="submit" value="Continue"
-              class="btn btn-primary float-right"
-              :disabled="invalid">
+              class="btn btn-primary float-right">
             </form>
 
             <form v-if="userRecognized && !userRegistered"
@@ -51,8 +50,7 @@
               </ValidationProvider>
 
               <input type="submit" value="Register"
-              class="btn btn-primary float-right"
-              :disabled="invalid">
+              class="btn btn-primary float-right">
             </form>
 
             <form v-if="userRecognized && userRegistered && !userFirstRegister"
@@ -76,8 +74,7 @@
               </ValidationProvider>
 
               <input type="submit" value="Continue"
-              class="btn btn-primary float-right"
-              :disabled="invalid">
+              class="btn btn-primary float-right">
             </form>
           </ValidationObserver>
         </div>
@@ -118,7 +115,9 @@ export default {
     };
   },
   methods: {
-    validateEmail() {
+    async validateEmail() {
+      const valid = await this.$refs.observer.validate();
+      if (!valid) return;
       this.processed = true;
       this.processing = true;
 
@@ -135,7 +134,10 @@ export default {
 
       this.processing = false;
     },
-    registerPassword() {
+    async registerPassword() {
+      const valid = await this.$refs.observer.validate();
+      if (!valid) return;
+
       this.processing = true;
 
       this.emailSend = true;
@@ -148,6 +150,14 @@ export default {
       this.title = 'We would love to know your name,';
       this.subtitle = 'so we can address you more appropriately.';
       this.userFirstRegister = true;
+
+      this.processing = false;
+    },
+    async registerName() {
+      const valid = await this.$refs.observer.validate();
+      if (!valid) return;
+
+      this.processing = true;
 
       this.processing = false;
     },
