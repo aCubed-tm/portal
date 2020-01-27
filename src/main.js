@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Vuelidate from 'vuelidate';
-import axios from 'axios';
 import {
   ValidationObserver,
   ValidationProvider,
@@ -9,14 +8,12 @@ import {
   localize,
 } from 'vee-validate';
 import en from 'vee-validate/dist/locale/en.json';
-import * as rules from 'vee-validate/dist/rules';
+import * as rules from 'vee-validate/dist/rules.umd';
 import App from './App.vue';
-
+import RequestService from '@/services/RequestService';
+import AuthService from '@/services/AuthService';
 import router from './router';
 import store from './store';
-
-axios.defaults.baseURL = 'api.acubed.app';
-
 
 // install rules and localization
 Object.keys(rules).forEach(rule => {
@@ -33,10 +30,26 @@ Vue.use(Vuex);
 Vue.use(Vuelidate);
 Vue.config.productionTip = false;
 
+const ENDPOINT_EDGE = 'https://api.acubed.app';
+RequestService.init(ENDPOINT_EDGE);
+
 new Vue({
   router,
   store,
   render: h => h(App),
+
+  beforeMount() {
+    if (AuthService.isLoggedIn()) {
+      AuthService.setAuthorizationHeader();
+
+      AuthService.renew()
+        .then((response) => {
+          // TODO: get user data
+          console.log(response);
+        })
+        .catch(() => { AuthService.logout(); });
+    }
+  },
 
   mounted() {
     this.calculateViewportHeight();
