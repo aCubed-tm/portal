@@ -1,4 +1,4 @@
-<style lang="scss" skoped>
+<style lang="scss">
   #change {
     font-size: .8em;
     margin-bottom: 0px;
@@ -18,6 +18,9 @@
     <input :id="id" type="email" class="form-control" :placeholder="placeholder"
       :value="localValue" @change="updateLocalValue($event)"
       :disabled="disabled" :readonly="readonly">
+    <div v-if="error" class="float-left text-secondary w-100" id="error">
+      <p>{{error}}</p>
+    </div>
   </div>
 </template>
 
@@ -53,6 +56,9 @@ export default {
       default: false,
     },
     change: {
+      default: false,
+    },
+    error: {
       default: false,
     },
   },

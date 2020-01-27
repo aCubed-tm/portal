@@ -4,6 +4,9 @@
     <input :id="id" type="text" class="form-control" :placeholder="placeholder"
       :value="localValue" @change="updateLocalValue($event)"
       :disabled="disabled" :readonly="readonly">
+    <div v-if="error" class="float-left text-secondary w-100" id="error">
+      <p>{{error}}</p>
+    </div>
   </div>
 </template>
 
@@ -39,6 +42,9 @@ export default {
       default: false,
     },
     change: {
+      default: false,
+    },
+    error: {
       default: false,
     },
   },
