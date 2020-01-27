@@ -28,8 +28,11 @@ form {
         <header class="mb-4 text-center">
           <h1>{{title}}</h1>
         </header>
+        <ValidationObserver v-slot="{ invalid }">
         <form @submit.prevent="recover_password(this.email)" novalidate>
-          <email v-model="email" label="Your email address" placeholder="john.doe@example.com"/>
+        <ValidationProvider name="email" rules="required|email" v-slot="{ errors }">
+          <email v-model="email" label="Your email address" placeholder="john.doe@example.com" :error="errors[0]"/>
+          </ValidationProvider>
           <input
             type="submit"
             value="Continue"
@@ -37,6 +40,8 @@ form {
           />
           <p v-if="this.message.length > 0" :class="{'text-danger': hasError }">{{this.message}}</p>
         </form>
+       </ValidationObserver>
+
       </div>
     </div>
   </div>
@@ -64,7 +69,10 @@ export default {
       send_recovery: 'auth/sendRecovery',
     }),
 
-    recover_password() {
+    async recover_password() {
+      const valid = await this.$refs.observer.validate();
+      if (!valid) return;
+
       this.send_recovery(this.email).then(response => {
         if (!response.error) {
           this.message = response.value;
