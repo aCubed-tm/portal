@@ -1,20 +1,20 @@
-<style lang="scss" skoped>
+<style lang="scss">
   #wrapper .container-fluid {
     background: rgb(11,4,37);
-    background: radial-gradient(200% 150% ellipse at 50% 215%, rgba(190,100,154,1), rgba(11,4,37,1));
+    background: radial-gradient(200% 150% ellipse at 50% 215%,
+     rgba(190,100,154,1), rgba(11,4,37,1));
     background-repeat: no-repeat;
     background-attachment: fixed;
     min-height: calc(var(--vh, 1vh) * 100);
   }
 
   h1 { font-size: 22px; }
-  form, .disclaimer {
+  form {
     width: 80vw;
     @media screen and (min-width:350px){
       width: 330px;
     }
   }
-  .disclaimer { transform:translateY(150px); }
 </style>
 
 <template>
@@ -27,39 +27,60 @@
         </header>
 
         <div v-if="!emailSend">
-          <form v-if="!userRecognized" @submit.prevent="validateEmail" novalidate>
-            <email v-model="formData.email" label="Your email address"
-              placeholder="john.doe@example.com"/>
-            <input type="submit" value="Continue" class="btn btn-primary float-right">
-          </form>
+          <ValidationObserver ref="observer">
+            <form v-if="!userRecognized" @submit.prevent="validateEmail"
+            novalidate>
+              <ValidationProvider name="email" rules="required|email" v-slot="{ errors }">
+                <email v-model="formData.email" label="Your email address"
+                  placeholder="john.doe@example.com" :error="errors[0]"/>
+              </ValidationProvider>
 
-          <form v-if="userRecognized && !userRegistered" @submit.prevent="registerPassword" novalidate>
-            <email label="Your email address" disabled=true change=true @go-back="goBack"
-              :placeholder="formData.email"/>
-            <password v-model="formData.password" label="Your password"
-              placeholder="Create your password"/>
-            <input type="submit" value="Register" class="btn btn-primary float-right">
+              <input type="submit" value="Continue"
+              class="btn btn-primary float-right">
+            </form>
 
-            <span class="clearfix"></span>
+            <form v-if="userRecognized && !userRegistered"
+            @submit.prevent="registerPassword" novalidate>
+              <email label="Your email address" disabled=true change=true @go-back="goBack"
+                :placeholder="formData.email"/>
 
-            <div class="disclaimer position-absolute">
-              <div class="text-secondary text-white-50">
-                <h2 class="small font-weight-bold">Disclaimer</h2>
-                <p class="small">For demonstrative purposes, registration will be limited
-                  to a select number of email addresses.</p>
-              </div>
-            </div>
-          </form>
+              <ValidationProvider name="password" rules="required|min:8" v-slot="{ errors }">
+                <password v-model="formData.password" label="Your password"
+                  placeholder="Create your password" :error="errors[0]"/>
+              </ValidationProvider>
 
-          <form v-if="userRecognized && userRegistered" @submit.prevent="validatePassword" novalidate>
-            <password v-model="formData.password" label="Your password"
-              placeholder="Enter your password"/>
-            <input type="submit" value="Login" class="btn btn-primary float-right">
-          </form>
+              <input type="submit" value="Register"
+              class="btn btn-primary float-right">
+            </form>
+
+            <form v-if="userRecognized && userRegistered && !userFirstRegister"
+            @submit.prevent="validatePassword" novalidate>
+              <password v-model="formData.password" label="Your password"
+                placeholder="Enter your password"/>
+
+              <input type="submit" value="Login" class="btn btn-primary float-right">
+            </form>
+
+            <form v-if="userRecognized && userRegistered && userFirstRegister"
+            @submit.prevent="registerName" novalidate>
+              <ValidationProvider name="firstname" rules="required" v-slot="{ errors }">
+                <textInput v-model="formData.firstname" label="Your firstname"
+                  placeholder="Enter your firstname" :error="errors[0]"/>
+              </ValidationProvider>
+
+              <ValidationProvider name="lastname" rules="required" v-slot="{ errors }">
+                <textInput v-model="formData.name" label="Your lastname"
+                  placeholder="Enter your lastname" :error="errors[0]"/>
+              </ValidationProvider>
+
+              <input type="submit" value="Continue"
+              class="btn btn-primary float-right">
+            </form>
+          </ValidationObserver>
         </div>
 
-        <div v-else>
-
+        <div v-else class="text-center mt-5">
+          <img src="images/mailSent.svg" height="120px" alt="mail sent image"/>
         </div>
       </div>
     </div>
@@ -67,11 +88,13 @@
 </template>
 
 <script>
+//* Imports
 import email from '@/components/input/email.vue';
 import password from '@/components/input/password.vue';
+import textInput from '@/components/input/text.vue';
 
 export default {
-  components: { email, password },
+  components: { email, password, textInput },
 
   data() {
     return {
@@ -80,23 +103,26 @@ export default {
       formData: {
         email: '',
         password: '',
+        firstname: '',
+        name: '',
       },
       userRecognized: false,
       userRegistered: false,
+      userFirstRegister: false,
       title: 'Sign in to Portal',
       subtitle: null,
       emailSend: false,
     };
   },
-
   methods: {
-    validateEmail() {
+    async validateEmail() {
+      const valid = await this.$refs.observer.validate();
+      if (!valid) return;
       this.processed = true;
       this.processing = true;
 
       if (this.formData.email === 'test@test.com') { //! Fake invited user login
         this.userRecognized = true;
-        this.userRegistered = false;
         this.title = 'Nice to meet you!';
         this.subtitle = 'You were invited to create an account.';
       } else { //! Fake existing user login
@@ -108,15 +134,30 @@ export default {
 
       this.processing = false;
     },
-    registerPassword() {
+    async registerPassword() {
+      const valid = await this.$refs.observer.validate();
+      if (!valid) return;
+
       this.processing = true;
 
+      this.emailSend = true;
 
       this.processing = false;
     },
     validatePassword() {
       this.processing = true;
 
+      this.title = 'We would love to know your name,';
+      this.subtitle = 'so we can address you more appropriately.';
+      this.userFirstRegister = true;
+
+      this.processing = false;
+    },
+    async registerName() {
+      const valid = await this.$refs.observer.validate();
+      if (!valid) return;
+
+      this.processing = true;
 
       this.processing = false;
     },
@@ -125,8 +166,10 @@ export default {
 
       this.userRecognized = false;
       this.userRegistered = false;
+      this.userFirstRegister = false;
       this.title = 'Sign in to Portal';
       this.subtitle = '';
+      this.emailSend = false;
 
       this.processing = false;
     },
