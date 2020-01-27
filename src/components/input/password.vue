@@ -4,9 +4,12 @@
     <input :id="id" type="password" class="form-control" :placeholder="placeholder"
       :value="localValue" @change="updateLocalValue($event)"
       :disabled="disabled" :readonly="readonly">
-    <div v-if="error" class="float-left text-secondary w-100" id="error">
-      <p>{{error}}</p>
-    </div>
+
+    <transition name="fadeY">
+      <div v-if="error" class="float-left text-secondary w-100" id="error">
+        <p>{{error}}</p>
+      </div>
+    </transition>
   </div>
 </template>
 
