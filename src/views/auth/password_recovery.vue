@@ -28,7 +28,7 @@ form {
         <header class="mb-4 text-center">
           <h1>{{title}}</h1>
         </header>
-        <ValidationObserver v-slot="{ invalid }">
+        <ValidationObserver ref="observer">
         <form @submit.prevent="recover_password(this.email)" novalidate>
         <ValidationProvider name="email" rules="required|email" v-slot="{ errors }">
           <email v-model="email" label="Your email address" placeholder="john.doe@example.com" :error="errors[0]"/>
@@ -38,7 +38,7 @@ form {
             value="Continue"
             class="btn btn-primary float-right"
           />
-          <p v-if="this.message.length > 0" :class="{'text-danger': hasError }">{{this.message}}</p>
+           <p v-if="this.message.length > 0" :class="{'text-danger': hasError }">{{this.message}}</p>
         </form>
        </ValidationObserver>
 
@@ -58,7 +58,7 @@ export default {
   data() {
     return {
       email: '',
-      message: '',
+      message: ' ',
       hasError: false,
       title: 'Recover password',
     };
