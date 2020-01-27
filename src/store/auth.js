@@ -100,5 +100,13 @@ export default {
       }
       return false;
     },
+
+    async sendRecovery(email) {
+      const response = await axios.post('', { email });
+      if (!response.data.error) {
+        return response.data;
+      }
+      return response.data;
+    },
   },
 };

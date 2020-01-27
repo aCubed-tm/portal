@@ -23,6 +23,12 @@ const routes = [
     name: 'auth',
     component: lazyLoad('auth/login'),
   },
+  {
+    path: '/auth/passwordrecovery',
+    name: 'passwordRecovery',
+    component: lazyLoad('auth/password_recovery'),
+    // beforeEnter: authGuard
+  },
 ];
 
 const router = new VueRouter({
