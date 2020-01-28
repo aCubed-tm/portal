@@ -30,9 +30,9 @@ const routes = [
     // beforeEnter: authGuard
   },
   {
-    path: '/map/search',
-    name: 'map/search',
-    component: lazyLoad('map/partials/Search'),
+    path: '/map',
+    name: 'map',
+    component: lazyLoad('map/Show'),
   },
 ];
 

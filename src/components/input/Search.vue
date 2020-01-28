@@ -1,15 +1,26 @@
+<style lang="scss">
+.has-search{
+  border-radius: 40px;
+    .form-control {
+      padding-left: 2.375rem;
+      border-radius: 40px;
+
+  };
+  .form-control-feedback {
+      position: absolute;
+      margin: 15px 12px;
+      color: #aaa;
+  };
+}
+</style>
 <template>
-  <div class="form-group">
-    <label v-if="label" :for="id" v-html="label"></label>
-    <div class="input-group mb-3">
-      <div class="input-group-prepend border-right-0">
-        <span class="form-control border-right-0">
-          <slot></slot>
-        </span>
-      </div>
-      <input :id="id" type="text" class="form-control border-left-0" :placeholder="placeholder"
-              :value="localValue" @change="updateLocalValue($event)"
-              :disabled="disabled" :readonly="readonly">
+  <div>
+    <div class="form-group has-search border">
+      <span class="fa fa-search form-control-feedback"></span>
+      <input :id="id" type="text" class="form-control" :placeholder="placeholder"
+                :value="localValue" @change="updateLocalValue($event)"
+                @focus="$emit('focus')" @blur="$emit('blur')"
+                :disabled="disabled" :readonly="readonly">
     </div>
   </div>
 </template>
