@@ -32,7 +32,8 @@
             novalidate>
               <ValidationProvider name="email" rules="required|email" v-slot="{ errors }">
                 <email v-model="formData.email" label="Your email address"
-                  placeholder="john.doe@example.com" :error="nonRegisterdMail ? nonRegisterdMail : errors[0]"/>
+                  placeholder="john.doe@example.com"
+                  :error="nonRegisterdMail ? nonRegisterdMail : errors[0]"/>
               </ValidationProvider>
 
               <input type="submit" value="Continue"
@@ -122,14 +123,24 @@ export default {
 
       const valid = await this.$refs.observer.validate();
       if (!valid) return;
+
       this.processed = true;
       this.processing = true;
 
-      if (this.formData.email === 'test@test.com') { //! Fake invited user login
+      if (this.formData.email === 'a@a.com') {
+        //! Mock not allowed user
+        this.nonRegisterdMail = 'This email has no access';
+        this.processed = false;
+        return;
+      }
+
+      if (this.formData.email === 'test@test.com') {
+        //! Mock invited user
         this.userRecognized = true;
         this.title = 'Nice to meet you!';
         this.subtitle = 'You were invited to create an account.';
-      } else { //! Fake existing user login
+      } else {
+        //! Mock existing user
         this.userRecognized = true;
         this.userRegistered = true;
         this.title = 'Great to see you!';
