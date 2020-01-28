@@ -1,24 +1,21 @@
 <style lang="scss">
-  .search{
-    position:relative;
-  }
-  .search:before{
-    content: "\f002";
-    font-family: "Font Awesome 5 Free";
-    left:-5px;
-    position:absolute;
-    top:0;
-  }
+.has-search .form-control {
+    padding-left: 2.375rem;
+};
+.has-search .form-control-feedback {
+    position: absolute;
+    margin: 15px 12px;
+    color: #aaa;
+};
 </style>
 <template>
-  <div class="form-group">
-    <label v-if="label" :for="id" v-html="label"></label>
-    <div class="input-group mb-3">
-      <i class="fas fa-search"></i>
-      <input :id="id" type="text" class="search form-control rounded-right" :placeholder="placeholder"
+<div>
+  <div class="form-group has-search">
+    <span class="fa fa-search form-control-feedback"></span>
+    <input :id="id" type="text" class="form-control" :placeholder="placeholder"
               :value="localValue" @change="updateLocalValue($event)"
               :disabled="disabled" :readonly="readonly">
-    </div>
+  </div>
   </div>
 </template>
 
