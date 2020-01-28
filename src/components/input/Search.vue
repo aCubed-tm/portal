@@ -14,13 +14,14 @@
 }
 </style>
 <template>
-<div>
-  <div class="form-group has-search border">
-    <span class="fa fa-search form-control-feedback"></span>
-    <input :id="id" type="text" class="form-control" :placeholder="placeholder"
-              :value="localValue" @change="updateLocalValue($event)"
-              :disabled="disabled" :readonly="readonly">
-  </div>
+  <div>
+    <div class="form-group has-search border">
+      <span class="fa fa-search form-control-feedback"></span>
+      <input :id="id" type="text" class="form-control" :placeholder="placeholder"
+                :value="localValue" @change="updateLocalValue($event)"
+                @focus="$emit('focus')" @blur="$emit('blur')"
+                :disabled="disabled" :readonly="readonly">
+    </div>
   </div>
 </template>
 
