@@ -1,13 +1,21 @@
+<style lang="scss">
+  .search{
+    position:relative;
+  }
+  .search:before{
+    content: "\f002";
+    font-family: "Font Awesome 5 Free";
+    left:-5px;
+    position:absolute;
+    top:0;
+  }
+</style>
 <template>
   <div class="form-group">
     <label v-if="label" :for="id" v-html="label"></label>
     <div class="input-group mb-3">
-      <div class="input-group-prepend border-right-0">
-        <span class="form-control border-right-0">
-          <slot></slot>
-        </span>
-      </div>
-      <input :id="id" type="text" class="form-control border-left-0" :placeholder="placeholder"
+      <i class="fas fa-search"></i>
+      <input :id="id" type="text" class="search form-control rounded-right" :placeholder="placeholder"
               :value="localValue" @change="updateLocalValue($event)"
               :disabled="disabled" :readonly="readonly">
     </div>
