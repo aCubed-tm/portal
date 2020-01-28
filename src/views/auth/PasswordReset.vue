@@ -49,11 +49,10 @@ form {
 
 <script>
 import { mapActions } from 'vuex';
-import email from '@/components/input/email.vue';
+import Email from '@/components/input/Email.vue';
 
 export default {
-  name: 'password_recovery',
-  components: { email },
+  components: { Email },
 
   data() {
     return {

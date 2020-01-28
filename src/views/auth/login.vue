@@ -89,12 +89,12 @@
 
 <script>
 //* Imports
-import email from '@/components/input/email.vue';
-import password from '@/components/input/password.vue';
-import textInput from '@/components/input/text.vue';
+import Email from '@/components/input/Email.vue';
+import Password from '@/components/input/Password.vue';
+import TextInput from '@/components/input/Text.vue';
 
 export default {
-  components: { email, password, textInput },
+  components: { Email, Password, TextInput },
 
   data() {
     return {
