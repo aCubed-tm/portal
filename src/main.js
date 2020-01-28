@@ -40,13 +40,7 @@ new Vue({
 
   beforeMount() {
     if (AuthService.isLoggedIn()) {
-      AuthService.setAuthorizationHeader();
-
-      AuthService.renew()
-        .then(() => {
-          // TODO: get user data
-        })
-        .catch(() => { AuthService.logout(); });
+      this.$store.dispatch('auth/reauthenticate');
     }
   },
 
