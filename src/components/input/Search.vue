@@ -1,16 +1,21 @@
 <style lang="scss">
-.has-search .form-control {
-    padding-left: 2.375rem;
-};
-.has-search .form-control-feedback {
-    position: absolute;
-    margin: 15px 12px;
-    color: #aaa;
-};
+.has-search{
+  border-radius: 40px;
+    .form-control {
+      padding-left: 2.375rem;
+      border-radius: 40px;
+
+  };
+  .form-control-feedback {
+      position: absolute;
+      margin: 15px 12px;
+      color: #aaa;
+  };
+}
 </style>
 <template>
 <div>
-  <div class="form-group has-search">
+  <div class="form-group has-search border">
     <span class="fa fa-search form-control-feedback"></span>
     <input :id="id" type="text" class="form-control" :placeholder="placeholder"
               :value="localValue" @change="updateLocalValue($event)"

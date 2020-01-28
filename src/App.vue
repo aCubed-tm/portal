@@ -1,6 +1,4 @@
 <style lang="scss">
-  @import '@/assets/styles/main';
-
   #app {
       min-height: 100vh;
       min-height: calc(var(--vh, 1vh) * 100);
