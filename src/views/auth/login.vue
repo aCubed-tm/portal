@@ -32,7 +32,7 @@
             novalidate>
               <ValidationProvider name="email" rules="required|email" v-slot="{ errors }">
                 <email v-model="formData.email" label="Your email address"
-                  placeholder="john.doe@example.com" :error="errors[0]"/>
+                  placeholder="john.doe@example.com" :error="nonRegisterdMail ? nonRegisterdMail : errors[0]"/>
               </ValidationProvider>
 
               <input type="submit" value="Continue"
@@ -112,10 +112,14 @@ export default {
       title: 'Sign in to Portal',
       subtitle: null,
       emailSend: false,
+      nonRegisterdMail: '',
     };
   },
   methods: {
+    //* Submit methods
     async validateEmail() {
+      this.nonRegisterdMail = '';
+
       const valid = await this.$refs.observer.validate();
       if (!valid) return;
       this.processed = true;
@@ -161,6 +165,8 @@ export default {
 
       this.processing = false;
     },
+
+    //* Other buttons methods
     goBack() {
       this.processing = true;
 
