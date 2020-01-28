@@ -4,14 +4,14 @@ export default {
   getAuthorizationToken(data) {
     return axios({
       method: 'post',
-      url: 'authenticate',
+      url: 'auth/login',
       data,
     });
   },
   renewAuthorizationToken() {
     return axios({
       method: 'get',
-      url: 'reauthenticate',
+      url: 'auth/',
     });
   },
 };

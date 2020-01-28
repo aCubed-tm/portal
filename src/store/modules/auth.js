@@ -36,11 +36,11 @@ export default {
       return AuthService.login(credentials)
         .then((authResponse) => {
           const { uuid } = authResponse.data;
-          commit('SET_LOGGED_IN_USER_UUID', uuid);
+          commit(SET_LOGGED_IN_USER_UUID, uuid);
 
           ProfileAPI.getWhereUuid({ uuid })
             .then((profileResponse) => {
-              commit('SET_LOGGED_IN_USER_PROFILE', profileResponse.data);
+              commit(SET_LOGGED_IN_USER_PROFILE, profileResponse.data);
             });
         });
     },
@@ -53,11 +53,11 @@ export default {
       return AuthService.renew()
         .then((authResponse) => {
           const { uuid } = authResponse.data;
-          commit('SET_LOGGED_IN_USER_UUID', uuid);
+          commit(SET_LOGGED_IN_USER_UUID, uuid);
 
           ProfileAPI.getWhereUuid({ uuid })
             .then((profileResponse) => {
-              commit('SET_LOGGED_IN_USER_PROFILE', profileResponse.data);
+              commit(SET_LOGGED_IN_USER_PROFILE, profileResponse.data);
             });
         })
         .catch(() => { AuthService.logout(); });
@@ -65,7 +65,7 @@ export default {
 
     logout({ commit }) {
       AuthService.logout();
-      commit('UNSET_LOGGED_IN_USER');
+      commit(UNSET_LOGGED_IN_USER);
     },
   },
 };
