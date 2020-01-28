@@ -15,18 +15,18 @@ const routes = [
   {
     path: '/',
     name: 'profile',
-    component: lazyLoad('profile/show'),
+    component: lazyLoad('profile/Show'),
     beforeEnter: authGuard,
   },
   {
     path: '/auth',
     name: 'auth',
-    component: lazyLoad('auth/login'),
+    component: lazyLoad('auth/Login'),
   },
   {
-    path: '/auth/passwordrecovery',
-    name: 'passwordRecovery',
-    component: lazyLoad('auth/password_recovery'),
+    path: '/auth/reset-password',
+    name: 'passwordReset',
+    component: lazyLoad('auth/PasswordReset'),
     // beforeEnter: authGuard
   },
 ];
