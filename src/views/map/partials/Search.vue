@@ -10,23 +10,25 @@
 </style>
 <template>
     <div>
-        <div class="searchbar m-5">
-            <search @focus="searching = true"
-                    @blur="searching = false"
-                    placeholder='Search'
-                    v-model = "query">
-                    <i class="fas fa-search"></i>
-            </search>
-        </div>
-        <div v-if="searching" class="searchResults ml-5">
-            <ul class="list-group">
-                <li class="list-group-item " v-for="object in objects" :key="object.id">
-                    <div class="text-capitalize d-flex justify-content-between">
-                        {{object.name}} <span class="text-muted">16 seconds ago</span>
-                    </div>
-                    <div>located at {{object.location}}</div>
-                </li>
-            </ul>
+        <div id="search" class="ml-5 mt-5 position-fixed">
+            <div class="searchbar">
+                <search @focus="searching = true"
+                        @blur="searching = false"
+                        placeholder='Search'
+                        v-model = "query">
+                        <i class="fas fa-search"></i>
+                </search>
+            </div>
+            <div v-if="searching" class="searchResults">
+                <ul class="list-group">
+                    <li class="list-group-item " v-for="object in objects" :key="object.id">
+                        <div class="text-capitalize d-flex justify-content-between">
+                            {{object.name}} <span class="text-muted">16 seconds ago</span>
+                        </div>
+                        <div>located at {{object.location}}</div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </template>
@@ -54,12 +56,6 @@ export default {
             searching: false,
             query: '',
         };
-    },
-
-    methods: {
-        // eslint-disable-next-line no-alert
-        showResults() { console.log('test'); this.searching = true; },
-        hideResults() { this.searching = false; },
     },
 };
 </script>
