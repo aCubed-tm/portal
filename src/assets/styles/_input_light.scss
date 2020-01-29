@@ -1,5 +1,5 @@
 //! Form color
 $input-color:           $black !default;
-$input-bg:              transparentize($white, 0.88) !default;
-$input-border-color:    transparentize($white, 0.79) !default;
-$input-disabled-bg:     transparentize($white, 0.80) !default;
+$input-bg:              transparentize($white, 0.2) !default;
+$input-border-color:    transparentize($white, 0.1) !default;
+$input-disabled-bg:     transparentize($white, 0.5) !default;
