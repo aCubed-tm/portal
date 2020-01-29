@@ -5,13 +5,14 @@
 .searchResults{
     width: 320px;
 }
-
+.timeText {
+    font-size: 12px;
+}
 </style>
 
 <template>
     <div>
-        <div id="search" class="ml-5 mt-5 position-fixed">
-
+        <div id="search">
             <div class="searchbar">
                 <search @focus="searching = true"
                         @blur="searching = false"
@@ -23,10 +24,11 @@
                     <ul class="list-group">
                         <li class="list-group-item "
                             v-for="object in objects"
-                            :key="object.id">
+                            :key="object.id"
+                            @click="showResult(object.id)">
                             <div class="text-capitalize d-flex justify-content-between">
                                 {{object.name}} {{object.number}}
-                                <span class="text-muted">16 seconds ago</span>
+                                <span class="text-muted timeText">16 seconds ago</span>
                             </div>
                             <div>located at {{object.location}}</div>
                         </li>
@@ -80,6 +82,11 @@ export default {
             searching: false,
             query: '',
         };
+    },
+    methods: {
+        showResult(id) {
+            this.$emit('show-result', id);
+        },
     },
 };
 </script>

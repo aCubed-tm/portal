@@ -13,8 +13,12 @@
 
 <template>
     <div class="backgroundMap">
-        <search />
-        <result class="m-5"/>
+        <div class="row ml-5 mt-5 position-fixed">
+            <search @show-result="showResult"/>
+            <transition name="fadeX">
+                <result v-if="result" class="ml-3"  @hide-result="hideResult"/>
+            </transition>
+        </div>
     </div>
 </template>
 
@@ -25,6 +29,19 @@ import Result from './partials/Results.vue';
 export default {
     name: 'map',
     components: { Search, Result },
-
+    data() {
+        return {
+            result: false,
+        };
+    },
+    methods: {
+      showResult(id) {
+        console.log(`selected: ${ id }`);
+        this.result = true;
+      },
+      hideResult() {
+        this.result = false;
+      },
+    },
 };
 </script>
