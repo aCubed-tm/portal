@@ -1,7 +1,7 @@
 <style lang="scss">
 @import '@/assets/styles/main-light';
 
-.map { height: 600px; }
+.map { height: 100vh; }
 
 </style>
 
@@ -27,7 +27,6 @@ export default {
         return {
             map: null,
             imageurl: '/images/mapL.png',
-            // imageurl: '/Users/martijn/laravel/project4_O/portal/src/assets/images/mapL.png',
         };
     },
     computed: {
@@ -43,11 +42,9 @@ export default {
             this.map = L.map('map', {
                 minZoom: 1, maxZoom: 5, center: [0, 0], zoom: 3, crs: L.CRS.Simple,
             });
-            console.log('this.map', this.map);
             L.imageOverlay(this.imageurl, this.bounds).addTo(this.map);
             this.map.fitBounds(this.bounds);
             this.map.setMaxBounds(this.bounds);
-            console.log('this.map2', this.map);
         },
     },
 };
