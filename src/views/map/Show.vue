@@ -1,20 +1,13 @@
 <style lang="scss">
 @import '@/assets/styles/main-light';
 
-.backgroundMap{
-    background-image: url('~@/assets/images/mapL.png');
-    background-repeat:  no-repeat;
-    background-attachment: fixed;
-    background-size:  cover;
-    width: 100vw;
-    height: 100vh;
-}
 </style>
 
 <template>
-    <div class="backgroundMap">
-        <div class="row ml-5 mt-5 position-fixed"
+    <div class="position-relative">
+        <div class="row ml-5 mt-5 content position-fixed"
             v-on-click-outside="stopSearch">
+            <map-view/>
             <div
             @click="startSearch">
                 <search @show-result="showResult" :active="active"/>
@@ -33,11 +26,12 @@
 import { mixin as onClickOutside } from 'vue-on-click-outside';
 import Search from './partials/Search.vue';
 import Result from './partials/Results.vue';
+import Map from './partials/Map.vue';
 
 export default {
     mixins: [onClickOutside],
-    name: 'map',
-    components: { Search, Result },
+    name: 'map-show',
+    components: { Search, Result, 'map-view': Map },
     data() {
         return {
             result: false,
