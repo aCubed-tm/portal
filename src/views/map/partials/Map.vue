@@ -1,9 +1,9 @@
 <style lang="scss">
-    .map { height: 100vh; }
+    .map { height: 100vh; width: 100vw }
 </style>
 <template>
     <div>
-        <div id="map" class="map"></div>
+        <div id="map" class="map position-fixed"></div>
     </div>
 </template>
 

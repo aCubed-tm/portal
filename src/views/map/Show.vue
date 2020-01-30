@@ -1,23 +1,26 @@
 <style lang="scss">
 @import '@/assets/styles/main-light';
 
+.iets{
+    z-index:10;
+}
+
 </style>
 
 <template>
     <div class="position-relative">
-        <div class="row ml-5 mt-5 content position-fixed"
-            v-on-click-outside="stopSearch">
+        <div class="rowcontent position-fixed">
             <map-view/>
             <div
-            @click="startSearch">
-                <search @show-result="showResult" :active="active"/>
-            </div>
-            <transition name="fadeX">
+            class="mt-5 ml-5 row" v-on-click-outside="stopSearch">
+                <div @click="startSearch" class="iets" ><search @show-result="showResult" :active="active"/></div>
+                <transition name="fadeX">
                 <result v-if="object"
                         class="ml-3"
                         :object="object"
                         @hide-result="hideResult"/>
             </transition>
+            </div>
         </div>
     </div>
 </template>
