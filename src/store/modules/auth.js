@@ -1,4 +1,6 @@
+import JwtDecode from 'jwt-decode';
 import AuthService from '@/services/AuthService';
+import JWTService from '@/services/JWTService';
 import { SET_LOGGED_IN_USER_UUID, UNSET_LOGGED_IN_USER, SET_LOGGED_IN_USER_PROFILE } from '../mutation-types';
 import ProfileAPI from '../../services/API/ProfileAPI';
 
@@ -35,12 +37,12 @@ export default {
     authenticate({ commit }, credentials) {
       return AuthService.login(credentials)
         .then((authResponse) => {
-          const { uuid } = authResponse.data;
+          const { uuid } = authResponse.data.value;
           commit(SET_LOGGED_IN_USER_UUID, uuid);
 
           ProfileAPI.getWhereUuid({ uuid })
             .then((profileResponse) => {
-              commit(SET_LOGGED_IN_USER_PROFILE, profileResponse.data);
+              commit(SET_LOGGED_IN_USER_PROFILE, profileResponse.data.value);
             });
         });
     },
@@ -50,15 +52,14 @@ export default {
 
       AuthService.setAuthorizationHeader();
 
-      return AuthService.renew()
-        .then((authResponse) => {
-          const { uuid } = authResponse.data;
-          commit(SET_LOGGED_IN_USER_UUID, uuid);
+      const token = JWTService.getToken();
+      const tokenPayload = JwtDecode(token);
 
-          ProfileAPI.getWhereUuid({ uuid })
-            .then((profileResponse) => {
-              commit(SET_LOGGED_IN_USER_PROFILE, profileResponse.data);
-            });
+      console.log(tokenPayload);
+
+      return ProfileAPI.getWhereUuid({ uuid: tokenPayload.uuid })
+        .then((profileResponse) => {
+          commit(SET_LOGGED_IN_USER_PROFILE, profileResponse.data);
         })
         .catch(() => { AuthService.logout(); });
     },

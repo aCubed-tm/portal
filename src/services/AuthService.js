@@ -7,7 +7,7 @@ export default {
     return AuthenticationAPI.getAuthorizationToken(credentials)
       .then((response) => {
         if (response.data.token) {
-          JWTService.setToken(response.data.token);
+          JWTService.setToken(response.data.value.token);
           this.setAuthorizationHeader();
         }
       });
@@ -21,15 +21,7 @@ export default {
   },
   renew() {
     if (!this.isLoggedIn()) throw new Error('Cannot renew authentication because user is not authenticated.');
-
-    return AuthenticationAPI.renewAuthorizationToken()
-      .then((response) => {
-        if (response.data.token) {
-          JWTService.setToken(response.data.token);
-          this.setAuthorizationHeader();
-        }
-        return response;
-      });
+    this.setAuthorizationHeader();
   },
   setAuthorizationHeader() {
     axios.defaults.headers.common.Authorization = `Bearer ${JWTService.getToken()}`;
