@@ -34,7 +34,7 @@ Vue.use(Vuex);
 Vue.use(Vuelidate);
 Vue.config.productionTip = false;
 
-const ENDPOINT_EDGE = 'https://api.acubed.app';
+const ENDPOINT_EDGE = 'https://api.acubed.app/v1/';
 RequestService.init(ENDPOINT_EDGE);
 
 new Vue({
