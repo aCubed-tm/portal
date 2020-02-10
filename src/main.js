@@ -9,6 +9,7 @@ import {
 } from 'vee-validate';
 import en from 'vee-validate/dist/locale/en.json';
 import * as rules from 'vee-validate/dist/rules.umd';
+import * as moment from 'moment';
 import { directive as onClickOutside } from 'vue-on-click-outside';
 import App from './App.vue';
 import RequestService from '@/services/RequestService';
@@ -18,6 +19,9 @@ import store from './store';
 
 // onclick outside
 Vue.directive('on-click-outside', onClickOutside);
+
+// moment
+Vue.use(moment);
 
 // install rules and localization
 Object.keys(rules).forEach(rule => {
