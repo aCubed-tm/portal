@@ -3,6 +3,15 @@ import JWTService from './JWTService';
 import AuthenticationAPI from './API/AuthenticationAPI';
 
 export default {
+  meet(email) {
+    return AuthenticationAPI.meet(email)
+      .then((response) => {
+        if (response.data.data.uuid) {
+          return true; // if user has uuid -> user login
+        }
+        return (response.data.data.invites.length > 0);// if has invites -> user register
+      });
+  },
   login(credentials) {
     return AuthenticationAPI.getAuthorizationToken(credentials)
       .then((response) => {
