@@ -1,7 +1,7 @@
 <style lang="scss">
 @import '@/assets/styles/main-light';
 
-.iets{
+.searchDiv{
     z-index:10;
 }
 
@@ -11,15 +11,17 @@
     <div class="position-relative">
         <div class="rowcontent position-fixed">
             <map-view/>
-            <div
-            class="mt-5 ml-5 row" v-on-click-outside="stopSearch">
-                <div @click="startSearch" class="iets" ><search @show-result="showResult" :active="active"/></div>
-                <transition name="fadeX">
-                <result v-if="object"
-                        class="ml-3"
-                        :object="object"
-                        @hide-result="hideResult"/>
-            </transition>
+            <div class="mt-5 ml-5 mr-5 row showBox"
+            v-on-click-outside="hideResult">
+                <div @click="startSearch" class="searchDiv col-auto">
+                    <search @show-result="showResult" :active="active"/>
+                </div>
+                <div class="resultDiv">
+                    <result v-if="object"
+                            class="ml-3 col-auto"
+                            :object="object"
+                            @hide-result="hideResult"/>
+                </div>
             </div>
         </div>
     </div>
@@ -42,20 +44,34 @@ export default {
             active: false,
         };
     },
+    created() {
+        window.addEventListener('resize', this.myResizeHandler);
+    },
+    destroyed() {
+        window.removeEventListener('resize', this.myResizeHandler);
+    },
     methods: {
+        myResizeHandler() {
+            if (window.innerWidth <= 1003) {
+                this.active = false;
+            } else {
+                this.active = true;
+            }
+        },
       showResult(object) {
+        if (window.innerWidth <= 1003) {
+            this.active = false;
+        }
         this.object = object;
       },
       hideResult() {
         this.active = false;
         this.object = false;
       },
-      stopSearch() {
-        this.active = false;
-        this.object = false;
-      },
       startSearch() {
-          this.active = true;
+        if (!this.object) {
+            this.active = true;
+        }
       },
     },
 };

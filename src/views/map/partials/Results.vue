@@ -1,12 +1,29 @@
 <style lang="scss">
-
 .fontSmaller{
     font-size: 12px;
+}
+
+//! Tablet
+@media screen and (max-width: 720px) {
+  body {
+    .card{
+        font-size: 90%;
+    }
+  }
+}
+
+//! Mobile
+@media screen and (max-width: 540px) {
+  body {
+    .card{
+        font-size: 85%;
+    }
+  }
 }
 </style>
 
 <template>
-    <div class="card" style="width: 32rem;">
+    <div class="card" style="max-width: 32rem;">
         <div id="searchResults" class="card-body">
             <button type="button" class="close" aria-label="Close"
                     @click="hideResult">
@@ -21,10 +38,10 @@
             <p class="fontSmaller">{{object.note}}</p>
             <hr/>
             <div class="row">
-                <div class="col-4">
+                <div class="col-md-6">
                     <button class="btn btn-primary">Get directions</button>
                 </div>
-                <div class="col-8 fontSmaller">
+                <div class="col-md-6 fontSmaller mt-2">
                     {{object.type}} {{object.name}} was located
                     {{object.timestamps[0].timestamp}} at
                     {{object.timestamps[0].location}}

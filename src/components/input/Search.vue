@@ -18,7 +18,8 @@
     <div class="form-group has-search border">
       <span class="fa fa-search form-control-feedback"></span>
       <input :id="id" type="text" class="form-control" :placeholder="placeholder"
-                :value="localValue" @change="updateLocalValue($event)"
+                v-bind:value="searchText"
+                v-on:input="$emit('input', $event.target.value)"
                 @focus="$emit('focus')" @blur="$emit('blur')"
                 :disabled="disabled" :readonly="readonly">
     </div>
@@ -26,8 +27,6 @@
 </template>
 
 <script>
-import input from './_input';
-
 const generateId = (length = 20) => {
   let result = '';
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -38,8 +37,11 @@ const generateId = (length = 20) => {
 };
 
 export default {
-  mixins: [input],
-
+  data() {
+      return {
+        searchText: '',
+      };
+  },
   props: {
     id: {
       default: generateId(),
