@@ -1,4 +1,6 @@
 <style lang="scss">
+  @import '@/assets/styles/main-dark';
+
 #wrapper .container-fluid {
   background: rgb(11, 4, 37);
   background: radial-gradient(

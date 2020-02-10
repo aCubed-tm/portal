@@ -29,6 +29,11 @@ const routes = [
     component: lazyLoad('auth/PasswordReset'),
     // beforeEnter: authGuard
   },
+  {
+    path: '/map',
+    name: 'map',
+    component: lazyLoad('map/Show'),
+  },
 ];
 
 const router = new VueRouter({
