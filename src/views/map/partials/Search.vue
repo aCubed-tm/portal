@@ -19,7 +19,7 @@
                         placeholder='Search'
                         v-model = "query"/>
             </div>
-            <transition name="fadeY">
+            <transition name="fadeYS">
                 <div v-if="active" class="searchResults">
                     <ul class="list-group">
                         <li class="list-group-item "
@@ -38,7 +38,9 @@
         </div>
     </div>
 </template>
+
 <script>
+import moment from 'moment';
 import Search from '@/components/input/Search.vue';
 
 export default {
@@ -56,15 +58,15 @@ export default {
                     note: 'Het is al geruime tijd een bekend gegeven dat een lezer, tijdens het bekijken van de layout van een pagina, afgeleid wordt door de tekstuele inhoud.',
                     timestamps: [
                         {
-                            timestamp: '3 seconds ago',
+                            timestamp: moment().startOf('minute').fromNow(),
                             location: '51.12345, 2.3213432',
                         },
                         {
-                            timestamp: '1 hour ago',
+                            timestamp: moment().startOf('hour').fromNow(),
                             location: '52.48962, 2.2048965',
                         },
                         {
-                            timestamp: '2 days ago',
+                            timestamp: moment().startOf('week').fromNow(),
                             location: '50.25879, 8.5216985',
                         },
                     ],
@@ -74,18 +76,18 @@ export default {
                     type: 'Vehicle',
                     name: 'TRA42X458',
                     // eslint-disable-next-line max-len
-                    note: 'Het is al geruime tijd een bekend gegeven dat een lezer, tijdens het bekijken van de layout van een pagina, afgeleid wordt door de tekstuele inhoud.',
+                    note: 'Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for will uncover many web sites still in their infancy.',
                     timestamps: [
                         {
-                            timestamp: '5 minutes ago',
+                            timestamp: moment().startOf('hour').fromNow(),
                             location: '49.20596, 1.2586202',
                         },
                         {
-                            timestamp: '10 hours ago',
+                            timestamp: moment().startOf('day').fromNow(),
                             location: '51.14584, 4.5436987',
                         },
                         {
-                            timestamp: '2 days ago',
+                            timestamp: moment().startOf('week').fromNow(),
                             location: '50.25879, 8.5216985',
                         },
                     ],
@@ -95,14 +97,14 @@ export default {
                     type: 'Container',
                     name: 'AX78C-56',
                     // eslint-disable-next-line max-len
-                    note: 'Het is al geruime tijd een bekend gegeven dat een lezer, tijdens het bekijken van de layout van een pagina, afgeleid wordt door de tekstuele inhoud.',
+                    note: 'All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet.',
                     timestamps: [
                         {
-                            timestamp: '1 minute ago',
+                            timestamp: moment().startOf('day').fromNow(),
                             location: '51.12345, 2.3213432',
                         },
                         {
-                            timestamp: '5 hours ago',
+                            timestamp: moment().startOf('month').fromNow(),
                             location: '52.48962, 2.2048965',
                         },
                     ],
@@ -112,10 +114,10 @@ export default {
                     type: 'Container',
                     name: 'AZ88A-69',
                     // eslint-disable-next-line max-len
-                    note: 'Het is al geruime tijd een bekend gegeven dat een lezer, tijdens het bekijken van de layout van een pagina, afgeleid wordt door de tekstuele inhoud.',
+                    note: 'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested.',
                     timestamps: [
                         {
-                            timestamp: '2 hours ago',
+                            timestamp: moment().startOf('year').fromNow(),
                             location: '51.12345, 2.3213432',
                         },
                     ],
