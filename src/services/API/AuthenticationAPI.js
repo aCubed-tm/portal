@@ -8,4 +8,11 @@ export default {
       data,
     });
   },
+  meet(data) {
+    return axios({
+      method: 'most',
+      url: 'auth/meet',
+      data,
+    });
+  },
 };
