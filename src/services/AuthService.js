@@ -6,8 +6,9 @@ export default {
   meet(email) {
     return AuthenticationAPI.meet(email)
       .then((response) => {
-        if (response.data.data.uuid) {
-          return true; // if user has uuid -> user login
+        if (response.data.data.uuid) { // if user has uuid -> user login
+          // set uuid
+          return true;
         }
         return (response.data.data.invites.length > 0);// if has invites -> user register
       });
