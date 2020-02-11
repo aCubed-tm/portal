@@ -6,7 +6,7 @@ export default {
   meet(email) {
     return AuthenticationAPI.meet(email)
       .then((response) => {
-        let authResponse;
+        const authResponse = { uuid: null, invites: [] };
         if (response.data.data.uuid) { // check if email belongs to account
           // set uuid
           authResponse.uuid = response.data.data.uuid;

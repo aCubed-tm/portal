@@ -46,14 +46,14 @@ export default {
     meet({ commit }, email) {
       return AuthService.meet(email)
         .then((authResponse) => {
-          if (authResponse.invites) {
+          if (authResponse.invites.length > 0) {
             commit(SET_INVITES, authResponse.invites);
           }
           // if has uuid go to login, if has invites go to register else say no access
           if (authResponse.uuid) {
             return 'login';
           }
-            return authResponse.invites ? 'register' : 'error';
+            return authResponse.invites.length > 0 ? 'register' : 'error';
         });
     },
     authenticate({ commit }, credentials) {
