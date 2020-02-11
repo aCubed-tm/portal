@@ -92,6 +92,7 @@
 
 <script>
 //* Imports
+import { mapActions } from 'vuex';
 import Email from '@/components/input/Email.vue';
 import Password from '@/components/input/Password.vue';
 import TextInput from '@/components/input/Text.vue';
@@ -119,6 +120,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      meet: 'auth/meet',
+    }),
     //* Submit methods
     async validateEmail() {
       this.nonRegisterdMail = '';
@@ -129,24 +133,22 @@ export default {
       this.processed = true;
       this.processing = true;
 
-      if (this.formData.email === 'a@a.com') {
-        //! Mock not allowed user
-        this.nonRegisterdMail = 'This email has no access';
-        this.processed = false;
-        return;
-      }
-
-      if (this.formData.email === 'test@test.com') {
+      if (this.meet(this.formData.email) === 'register') {
         //! Mock invited user
         this.userRecognized = true;
         this.title = 'Nice to meet you!';
         this.subtitle = 'You were invited to create an account.';
-      } else {
+      } else if (this.meet(this.formData.email) === 'login') {
         //! Mock existing user
         this.userRecognized = true;
         this.userRegistered = true;
         this.title = 'Great to see you!';
         this.subtitle = this.formData.email;
+      } else {
+        //! Mock not allowed user
+        this.nonRegisterdMail = 'This email has no access';
+        this.processed = false;
+        return;
       }
 
       this.processing = false;
