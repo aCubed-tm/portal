@@ -1,7 +1,12 @@
 import JwtDecode from 'jwt-decode';
 import AuthService from '@/services/AuthService';
 import JWTService from '@/services/JWTService';
-import { SET_LOGGED_IN_USER_UUID, UNSET_LOGGED_IN_USER, SET_LOGGED_IN_USER_PROFILE } from '../mutation-types';
+import {
+  SET_LOGGED_IN_USER_UUID,
+  UNSET_LOGGED_IN_USER,
+  SET_LOGGED_IN_USER_PROFILE,
+  SET_INVITES,
+} from '../mutation-types';
 import ProfileAPI from '../../services/API/ProfileAPI';
 
 export default {
@@ -12,6 +17,7 @@ export default {
       uuid: null,
       profile: null,
     },
+    invites: [],
   },
 
   getters: {},
@@ -31,9 +37,25 @@ export default {
         profile: null,
       };
     },
+    [SET_INVITES](_state, invites) {
+      _state.invites = invites;
+    },
   },
 
   actions: {
+    meet({ commit }, email) {
+      return AuthService.meet(email)
+        .then((authResponse) => {
+          if (authResponse.invites) {
+            commit(SET_INVITES, authResponse.invites);
+          }
+          // if has uuid go to login, if has invites go to register else say no access
+          if (authResponse.uuid) {
+            return 'login';
+          }
+            return authResponse.invites ? 'register' : 'error';
+        });
+    },
     authenticate({ commit }, credentials) {
       return AuthService.login(credentials)
         .then((authResponse) => {

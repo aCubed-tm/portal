@@ -1,4 +1,6 @@
 <style lang="scss">
+  @import '@/assets/styles/main-dark';
+
   #wrapper .container-fluid {
     background: rgb(11,4,37);
     background: radial-gradient(200% 150% ellipse at 50% 215%,
@@ -32,7 +34,8 @@
             novalidate>
               <ValidationProvider name="email" rules="required|email" v-slot="{ errors }">
                 <email v-model="formData.email" label="Your email address"
-                  placeholder="john.doe@example.com" :error="nonRegisterdMail ? nonRegisterdMail : errors[0]"/>
+                  placeholder="john.doe@example.com"
+                  :error="nonRegisterdMail ? nonRegisterdMail : errors[0]"/>
               </ValidationProvider>
 
               <input type="submit" value="Continue"
@@ -89,6 +92,7 @@
 
 <script>
 //* Imports
+import { mapActions } from 'vuex';
 import Email from '@/components/input/Email.vue';
 import Password from '@/components/input/Password.vue';
 import TextInput from '@/components/input/Text.vue';
@@ -116,24 +120,35 @@ export default {
     };
   },
   methods: {
+    ...mapActions({
+      meet: 'auth/meet',
+    }),
     //* Submit methods
     async validateEmail() {
       this.nonRegisterdMail = '';
 
       const valid = await this.$refs.observer.validate();
       if (!valid) return;
+
       this.processed = true;
       this.processing = true;
 
-      if (this.formData.email === 'test@test.com') { //! Fake invited user login
+      if (this.meet(this.formData.email) === 'register') {
+        //! Mock invited user
         this.userRecognized = true;
         this.title = 'Nice to meet you!';
         this.subtitle = 'You were invited to create an account.';
-      } else { //! Fake existing user login
+      } else if (this.meet(this.formData.email) === 'login') {
+        //! Mock existing user
         this.userRecognized = true;
         this.userRegistered = true;
         this.title = 'Great to see you!';
         this.subtitle = this.formData.email;
+      } else {
+        //! Mock not allowed user
+        this.nonRegisterdMail = 'This email has no access';
+        this.processed = false;
+        return;
       }
 
       this.processing = false;

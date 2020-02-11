@@ -35,6 +35,11 @@ const routes = [
     component: lazyLoad('profile/Show'),
     // beforeEnter: authGuard
   },
+  {
+    path: '/map',
+    name: 'map',
+    component: lazyLoad('map/Show'),
+  },
 ];
 
 const router = new VueRouter({
