@@ -29,6 +29,12 @@ const routes = [
     component: lazyLoad('auth/PasswordReset'),
     // beforeEnter: authGuard
   },
+  {
+    path: '/profile/',
+    name: 'myProfile',
+    component: lazyLoad('profile/Show'),
+    // beforeEnter: authGuard
+  },
 ];
 
 const router = new VueRouter({
