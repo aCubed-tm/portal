@@ -59,42 +59,27 @@
 
       </section>
       <section class="profile-links">
-        <a href="">
+        <router-link :to="'/user'">
           <div class="profile rounded-circle bg-primary d-flex justify-content-center align-items-center">
             L
           </div>
-        </a>
+        </router-link>
       </section>
     </div>
 
     <div id="menu-panel" class="d-flex flex-column">
-      <section class="top flex-grow-1">
-        <organisation-switcher></organisation-switcher>
-
-        <ul class="nav flex-column nav-pills mt-5" role="tablist">
-          <li class="nav-item">
-            <a href="#" class="nav-link active">Overview</a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">Members</a>
-          </li>
-          <li class="nav-item">
-            <a href="#" class="nav-link">Traceables</a>
-          </li>
-        </ul>
+      <section class="flex-grow-1">
+        <slot/>
       </section>
-      <section class="bottom flex-end">
-      </section>
+      <footer class="flex-end">
+        <slot name="footer"/>
+      </footer>
     </div>
   </div>
 </template>
 
 <script>
-import OrganisationSwitcher from '@/components/OrganisationSwitcher.vue';
-
 export default {
-  components: { OrganisationSwitcher },
-
   props: {
     filled: {
       required: false,
