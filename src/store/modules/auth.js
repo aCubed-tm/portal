@@ -77,8 +77,6 @@ export default {
       const token = JWTService.getToken();
       const tokenPayload = JwtDecode(token);
 
-      console.log(tokenPayload);
-
       return ProfileAPI.getWhereUuid({ uuid: tokenPayload.uuid })
         .then((profileResponse) => {
           commit(SET_LOGGED_IN_USER_PROFILE, profileResponse.data);
