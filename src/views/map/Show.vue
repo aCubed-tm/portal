@@ -1,5 +1,5 @@
 <style lang="scss">
-@import '@/assets/styles/main-light';
+@import '@/assets/styles/light/main';
 
 .searchDiv{
     z-index:10;
