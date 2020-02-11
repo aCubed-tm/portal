@@ -21,7 +21,7 @@ export default {
         const returndata = {
           data: {
             data: {
-              uuid: '<0x1>',
+              // uuid: '<0x1>',
               // invites: [{ email: data, sentat: '2020-02-10', organisation: '<0x3>' }],
               invites: [],
               data,

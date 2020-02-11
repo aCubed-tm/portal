@@ -122,7 +122,6 @@ export default {
   methods: {
     ...mapActions({
       meet: 'auth/meet',
-      login: 'auth/authenticate',
     }),
     //* Submit methods
     async validateEmail() {
@@ -169,7 +168,6 @@ export default {
     validatePassword() {
       this.processing = true;
 
-      this.login({ email: this.formData.email, password: this.formData.password });
       // check if profile exists else inputs with name
       this.title = 'We would love to know your name,';
       this.subtitle = 'so we can address you more appropriately.';
