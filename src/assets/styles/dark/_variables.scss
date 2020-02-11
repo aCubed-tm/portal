@@ -40,3 +40,6 @@ $input-btn-padding-x:         .85rem !default;
 //! Font awesome font folder
 $fa-font-path:        "~@fortawesome/fontawesome-free/webfonts";
 
+:root {
+    --highlighted: #{lighten($primary, 47%)};
+}

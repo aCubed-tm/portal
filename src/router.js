@@ -1,6 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+import profileChildren from '@/views/user/_routes';
+import organisationChildren from '@/views/organisation/_routes';
+import adminChildren from '@/views/admin/_routes';
+
 Vue.use(VueRouter);
 
 function lazyLoad(view) {
@@ -14,8 +18,8 @@ const authGuard = (to, from, next) => {
 const routes = [
   {
     path: '/',
-    name: 'profile',
-    component: lazyLoad('profile/Show'),
+    name: 'home',
+    component: lazyLoad('user/Show'),
     beforeEnter: authGuard,
   },
   {
@@ -27,6 +31,30 @@ const routes = [
     path: '/auth/reset-password',
     name: 'passwordReset',
     component: lazyLoad('auth/PasswordReset'),
+    // beforeEnter: authGuard
+  },
+  {
+    path: '/user/',
+    name: 'user',
+    component: lazyLoad('user/Show'),
+    redirect: '/user/profile',
+    children: profileChildren,
+    // beforeEnter: authGuard
+  },
+  {
+    path: '/organisation/',
+    name: 'organisation',
+    component: lazyLoad('organisation/Show'),
+    redirect: '/organisation/overview',
+    children: organisationChildren,
+    // beforeEnter: authGuard
+  },
+  {
+    path: '/admin/',
+    name: 'admin',
+    component: lazyLoad('admin/Show'),
+    redirect: '/admin/overview',
+    children: adminChildren,
     // beforeEnter: authGuard
   },
   {

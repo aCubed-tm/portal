@@ -1,5 +1,5 @@
 <style lang="scss">
-  @import '@/assets/styles/main-dark';
+  @import '@/assets/styles/dark/main';
 
 #wrapper .container-fluid {
   background: rgb(11, 4, 37);
