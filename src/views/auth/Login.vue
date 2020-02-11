@@ -133,24 +133,24 @@ export default {
       this.processed = true;
       this.processing = true;
 
-      if (this.meet(this.formData.email) === 'register') {
-        //! Mock invited user
-        this.userRecognized = true;
-        this.title = 'Nice to meet you!';
-        this.subtitle = 'You were invited to create an account.';
-      } else if (this.meet(this.formData.email) === 'login') {
-        //! Mock existing user
-        this.userRecognized = true;
-        this.userRegistered = true;
-        this.title = 'Great to see you!';
-        this.subtitle = this.formData.email;
+      this.meet(this.formData.email).then((response) => {
+        if (response === 'register') {
+          //! Mock invited user
+          this.userRecognized = true;
+          this.title = 'Nice to meet you!';
+          this.subtitle = 'You were invited to create an account.';
+      } else if (response === 'login') {
+          //! Mock existing user
+          this.userRecognized = true;
+          this.userRegistered = true;
+          this.title = 'Great to see you!';
+          this.subtitle = this.formData.email;
       } else {
-        //! Mock not allowed user
-        this.nonRegisterdMail = 'This email has no access';
-        this.processed = false;
-        return;
-      }
-
+          //! Mock not allowed user
+          this.nonRegisterdMail = 'This email has no access';
+          this.processed = false;
+        }
+      });
       this.processing = false;
     },
     async registerPassword() {
