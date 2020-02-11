@@ -1,0 +1,14 @@
+.nav-pills {
+    a {
+        color: black !important;
+
+        &:hover, &:focus, &:active{
+            color: var(--primary) !important;
+        }
+
+        &.active {
+            background-color: var(--highlighted) !important;
+            color: var(--primary) !important;
+        }
+    }
+}
