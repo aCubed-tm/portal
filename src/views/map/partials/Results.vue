@@ -39,7 +39,7 @@
             <hr/>
             <div class="row">
                 <div class="col-md-6">
-                    <button class="btn btn-primary">Get directions</button>
+                    <button class="btn btn-primary" @click="directionsObject">Get directions</button>
                 </div>
                 <div class="col-md-6 fontSmaller mt-2">
                     {{object.type}} {{object.name}} was located
@@ -69,6 +69,9 @@ export default {
         },
     },
     methods: {
+        directionsObject() {
+            this.$emit('directions-object');
+        },
         hideResult() {
             this.$emit('hide-result');
         },

@@ -150,3 +150,22 @@
         transform: translate3d(0, 5%, 0);
     }
 }
+
+//! background X appear
+.pullRight li:before
+{
+    position: absolute;
+    width: 0px;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+    content: '';
+    background: lightgray;
+    opacity: 0.3;
+    transition: all 0.2s ease-in-out;
+}
+
+.pullRight li:hover:before
+{
+    width: 100%;
+}
