@@ -8,25 +8,25 @@
 </style>
 
 <template>
-    <div class="position-relative">
-        <div class="rowcontent position-fixed">
-            <map-view :objects="objects" :object="objectTrack"/>
-            <div class="mt-5 ml-5 mr-5 row"
-            v-on-click-outside="hideSearch">
-                <div @click="startSearch" class="searchDiv col-auto">
-                    <search @show-result="showResult" :active="active"
-                    :objects="objects"/>
-                </div>
-                <div v-if="objectResult" class="resultDiv">
-                    <result
-                            class="ml-3 col-auto"
-                            :object="object"
-                            @directions-object="directionsObject"
-                            @hide-result="hideResult"/>
-                </div>
+  <div class="h-100 d-flex position-relative">
+    <nav-bar>
+      <div v-on-click-outside="hideSearch">
+            <div @click="startSearch" class="searchDiv col-auto">
+                <search @show-result="showResult" :active="active"
+                :objects="objects"/>
+            </div>
+            <div v-if="objectResult" class="resultDiv">
+                <result
+                        class="ml-3 col-auto"
+                        :object="object"
+                        @directions-object="directionsObject"
+                        @hide-result="hideResult"/>
             </div>
         </div>
-    </div>
+    </nav-bar>
+
+    <map-view :objects="objects" :object="objectTrack"/>
+  </div>
 </template>
 
 <script>
@@ -35,11 +35,17 @@ import { mixin as onClickOutside } from 'vue-on-click-outside';
 import Search from './partials/Search.vue';
 import Result from './partials/Results.vue';
 import Map from './partials/Map.vue';
+import Nav from '@/components/Nav.vue';
 
 export default {
     mixins: [onClickOutside],
     name: 'map-show',
-    components: { Search, Result, 'map-view': Map },
+    components: {
+      Search,
+      Result,
+      'map-view': Map,
+       NavBar: Nav,
+     },
     data() {
         return {
             result: false,

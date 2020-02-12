@@ -1,5 +1,5 @@
 <style lang="scss">
-    .map { height: 100vh; width: 100vw }
+    .map { height: 100%; width: 100%; }
 </style>
 <template>
     <div>
@@ -40,13 +40,14 @@ export default {
     methods: {
         initMap() {
             this.map = L.map('map', {
-                minZoom: 1, maxZoom: 5, center: [0, 0], zoom: 3, crs: L.CRS.Simple,
+                minZoom: 1, maxZoom: 5, zoom: 3, crs: L.CRS.Simple,
             });
             L.imageOverlay(this.imageurl, this.bounds).addTo(this.map);
             this.map.fitBounds(this.bounds);
             this.map.setMaxBounds(this.bounds);
             this.markers = L.layerGroup();
             this.map.addLayer(this.markers);
+            this.map.zoomControl.setPosition('verticalcenterright');
 
             this.updateMarkers();
         },

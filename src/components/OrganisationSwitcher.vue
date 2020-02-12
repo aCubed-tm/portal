@@ -58,7 +58,7 @@
 <template>
     <div class="organisation-switcher">
       <button class="d-block w-100 text-left active-organisation d-flex align-items-center rounded"
-        :class="{ 'selecting': showSelector }" @click="showSelector = !showSelector">
+        :class="{ 'selecting': showSelector }" @click.stop="showSelector = !showSelector">
         <div class="rounded symbol text-white d-flex justify-content-center align-items-center mr-2">
           <i class="fas fa-building"></i>
         </div>
@@ -96,6 +96,20 @@ export default {
     activeOrganisation() {
       return this.organisations.find((org) => org.uuid === this.activeOrganisationUuid);
     },
+  },
+
+  methods: {
+    onClick() {
+      this.showSelector = false;
+    },
+  },
+
+  mounted() {
+    document.addEventListener('click', this.onClick);
+  },
+
+  beforeDestroy() {
+    document.removeEventListener('click', this.onClick);
   },
 };
 </script>
