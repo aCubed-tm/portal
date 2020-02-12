@@ -14,6 +14,11 @@ export default [
     component: lazyLoad('organisations/Show'),
   },
   {
+    path: 'emails',
+    name: 'user.emails',
+    component: lazyLoad('emails/Show'),
+  },
+  {
     path: 'security',
     name: 'user.security',
     component: lazyLoad('security/Show'),

@@ -15,7 +15,10 @@
           <router-link :to="'/user/organisations'" class="nav-link" active-class="active">Organisations</router-link>
         </li>
         <li class="nav-item">
-          <router-link :to="'/user/security'" class="nav-link" active-class="active">Account Security</router-link>
+          <router-link :to="'/user/emails'" class="nav-link" active-class="active">Emails</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link :to="'/user/security'" class="nav-link" active-class="active">Security</router-link>
         </li>
       </ul>
     </NavBar>
