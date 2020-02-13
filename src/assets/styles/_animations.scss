@@ -154,6 +154,7 @@
 //! background X appear
 .pullRight li:before
 {
+    z-index: -1;
     position: absolute;
     width: 0px;
     height: 100%;
