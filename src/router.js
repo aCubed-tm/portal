@@ -62,6 +62,11 @@ const routes = [
     name: 'map',
     component: lazyLoad('map/Show'),
   },
+  {
+    path: '*',
+    name: 'error',
+    component: lazyLoad('error/404'),
+  },
 ];
 
 const router = new VueRouter({
