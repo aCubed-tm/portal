@@ -14,6 +14,7 @@
       width: 60px;
       height: 100vh;
       padding:30px 10px;
+      background: #fff;
 
       &.filled {
         background: #f9f9ff;
@@ -61,9 +62,9 @@
       width: 340px;
       height: 100vh;
       padding:30px;
-      background: white;
+      background: rgba(255, 255, 255, 0.667);
+      backdrop-filter: saturate(180%) blur(20px);
       border-left: 1px solid rgb(245, 245, 248);
-      border-right: 1px solid rgb(245, 245, 248);
 
       h1 {
         font-size: 1.6em;
