@@ -2,7 +2,7 @@
   <div class="form-group">
     <label v-if="label" :for="id" v-html="label"></label>
     <textarea :id="id" type="text" class="form-control" :placeholder="placeholder"
-      v-html="localValue" @change="updateLocalValue($event)"
+      v-html="localValue" @input="updateLocalValue($event)"
       :disabled="disabled" :readonly="readonly"></textarea>
 
     <transition name="fadeY">

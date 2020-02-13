@@ -1,5 +1,9 @@
 <style lang="scss">
   @import '@/assets/styles/light/main';
+
+  #content {
+    border-left: 1px solid rgb(245, 245, 248);
+  }
 </style>
 
 <template>

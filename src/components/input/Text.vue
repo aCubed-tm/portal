@@ -2,7 +2,8 @@
   <div class="form-group">
     <label v-if="label" :for="id" v-html="label"></label>
     <input :id="id" type="text" class="form-control" :placeholder="placeholder"
-      :value="localValue" @change="updateLocalValue($event)"
+      :value="localValue" @input="updateLocalValue($event)"
+      @focus="$emit('focus')" @blur="$emit('blur')"
       :disabled="disabled" :readonly="readonly">
 
     <transition name="fadeY">

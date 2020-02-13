@@ -47,7 +47,6 @@ export default {
             this.map.setMaxBounds(this.bounds);
             this.markers = L.layerGroup();
             this.map.addLayer(this.markers);
-            this.map.zoomControl.setPosition('verticalcenterright');
 
             this.updateMarkers();
         },

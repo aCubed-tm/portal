@@ -8,7 +8,7 @@
         :key="`394_emails_${email.emailAddress}`"
         class="list-group-item d-flex align-items-center">
 
-        <div class="flex-grow-1">
+        <div class="flex-grow-1 py-2">
           <p class="text-weight-bold m-0">
             {{ email.emailAddress }}
             <span v-if="email.isPrimary" class="small text-success text-weight-normal">

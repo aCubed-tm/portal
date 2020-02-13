@@ -17,7 +17,7 @@
     </div>
 
     <input :id="id" type="email" class="form-control" :placeholder="placeholder"
-      :value="localValue" @change="updateLocalValue($event)"
+      :value="localValue" @input="updateLocalValue($event)"
       :disabled="disabled" :readonly="readonly">
 
     <transition name="fadeY">
