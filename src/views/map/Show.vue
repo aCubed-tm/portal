@@ -10,7 +10,10 @@
   <div class="h-100 d-flex position-relative">
     <nav-bar :filled="false" class="position-absolute" style="z-index:10;">
       <div class="wider--nav-wrap">
-        <search @detail="showResult($event)" :objects="objects"/>
+        <search v-if="!detail" @detail="showResult($event)" :objects="objects"/>
+        <detail v-else
+                :object="detail"
+                @hide-result="backToSearch()"/>
       </div>
     </nav-bar>
 
@@ -21,12 +24,14 @@
 <script>
 import moment from 'moment';
 import Search from './partials/Search.vue';
+import Detail from './partials/Detail.vue';
 import Map from './partials/Map.vue';
 import Nav from '@/components/Nav.vue';
 
 export default {
     components: {
       Search,
+      Detail,
       MapView: Map,
       NavBar: Nav,
     },
@@ -149,10 +154,12 @@ export default {
     methods: {
       showResult(object) {
         this.detail = object;
+        this.track = this.detail;
       },
 
-      directionsObject() {
-        this.track = this.detail;
+      backToSearch() {
+        this.track = null;
+        this.detail = null;
       },
     },
 };

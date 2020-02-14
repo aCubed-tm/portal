@@ -26,11 +26,11 @@ export default {
         return {
             map: null,
             markers: null,
-            imageurl: '/images/mapL.png',
+            imageurl: '/images/mapXL.png',
         };
     },
     computed: {
-        southWest() { return this.map.unproject([0, 1080], 1); },
+        southWest() { return this.map.unproject([0, 1367], 1); },
         northEast() { return this.map.unproject([1920, 0], 1); },
         bounds() { return new L.LatLngBounds(this.southWest, this.northEast); },
     },
@@ -40,7 +40,7 @@ export default {
     methods: {
         initMap() {
             this.map = L.map('map', {
-                minZoom: 1, maxZoom: 5, zoom: 3, crs: L.CRS.Simple,
+                minZoom: 1, maxZoom: 3, zoom: 3, crs: L.CRS.Simple, nowrap: true,
             });
             L.imageOverlay(this.imageurl, this.bounds).addTo(this.map);
             this.map.fitBounds(this.bounds);
