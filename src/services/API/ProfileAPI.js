@@ -1,11 +1,17 @@
 import axios from 'axios';
 
 export default {
-  getWhereUuid(data) {
+  getWhereOrganisationUuid(data) {
     return axios({
-      method: 'post',
-      url: `profile/${data.uuid}`,
-      data,
+      method: 'get',
+      url: `profile/organiation/${data.uuid}`,
+    });
+  },
+
+  getWhereUserUuid(data) {
+    return axios({
+      method: 'get',
+      url: `profile/user/${data.uuid}`,
     });
   },
 };

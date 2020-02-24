@@ -17,6 +17,7 @@ module.exports = {
     'arrow-parens': 'off',
     'max-len': ['error', { code: 120 }],
     'no-param-reassign': 'off',
+    'no-confusing-arrow': 'off',
   },
   parserOptions: {
     parser: 'babel-eslint',

@@ -30,7 +30,7 @@ export default {
 
   props: {
     id: {
-      default: generateId(),
+      default: () => generateId(),
     },
     label: {
       default: false,

@@ -4,7 +4,7 @@
     <h1 class="m-0 h3">Email Settings</h1>
 
     <ul class="list-group mt-5">
-      <li v-for="email in emails.sort((a, b) => a.isPrimary ? -1 : 1)"
+      <li v-for="email in sortedEmails"
         :key="`394_emails_${email.emailAddress}`"
         class="list-group-item d-flex align-items-center">
 
@@ -37,6 +37,17 @@ export default {
         { emailAddress: 'lenny.kraaijenhof@gmail.com', isPrimary: false },
       ],
     };
+  },
+
+  computed: {
+    sortedEmails() {
+      return this.emails.concat().sort((a) => a.isPrimary ? -1 : 1);
+    },
+  },
+
+  methods: {
+    makePrimary() {},
+    deleteEmail() { },
   },
 };
 </script>
