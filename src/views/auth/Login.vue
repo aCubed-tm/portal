@@ -259,7 +259,7 @@ export default {
           else this.requireProfileSetup();
         })
         .catch(error => {
-          this.error = error.message;
+          this.error = 'Invalid password, please try again';
           throw error;
         });
 
