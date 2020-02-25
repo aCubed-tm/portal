@@ -28,18 +28,23 @@
           <p v-if="subtitle" class="mt-1">{{ subtitle }}</p>
         </header>
 
-        <div v-if="!emailSend">
+        <div v-if="!registrationComplete">
           <ValidationObserver ref="observer">
             <form v-if="!userRecognized" @submit.prevent="validateEmail"
             novalidate>
               <ValidationProvider name="email" rules="required|email" v-slot="{ errors }">
                 <email v-model="formData.email" label="Your email address"
-                  placeholder="john.doe@example.com"
-                  :error="nonRegisterdMail ? nonRegisterdMail : errors[0]"/>
+                  placeholder="john.doe@example.com" :show-error="processed"
+                  :error="error || errors[0]"/>
               </ValidationProvider>
 
-              <input type="submit" value="Continue"
-              class="btn btn-primary float-right">
+              <button type="submit" class="btn btn-primary float-right mt-3" :disabled="processing">
+                <template v-if="processing">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span class="sr-only">Loading...</span>
+                </template>
+                <template v-else> Continue </template>
+              </button>
             </form>
 
             <form v-if="userRecognized && !userRegistered"
@@ -52,16 +57,28 @@
                   placeholder="Create your password" :error="errors[0]"/>
               </ValidationProvider>
 
-              <input type="submit" value="Register"
-              class="btn btn-primary float-right">
+              <button type="submit" class="btn btn-primary float-right mt-3" :disabled="processing">
+                <template v-if="processing">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span class="sr-only">Loading...</span>
+                </template>
+                <template v-else> Register </template>
+              </button>
             </form>
 
             <form v-if="userRecognized && userRegistered && !userFirstRegister"
             @submit.prevent="validatePassword" novalidate>
               <password v-model="formData.password" label="Your password"
-                placeholder="Enter your password"/>
+                :show-error="processed" placeholder="Enter your password"
+                :error="error"/>
 
-              <input type="submit" value="Login" class="btn btn-primary float-right">
+              <button type="submit" class="btn btn-primary float-right mt-3" :disabled="processing">
+                <template v-if="processing">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span class="sr-only">Loading...</span>
+                </template>
+                <template v-else> Login </template>
+              </button>
             </form>
 
             <form v-if="userRecognized && userRegistered && userFirstRegister"
@@ -76,8 +93,13 @@
                   placeholder="Enter your lastname" :error="errors[0]"/>
               </ValidationProvider>
 
-              <input type="submit" value="Continue"
-              class="btn btn-primary float-right">
+              <button type="submit" class="btn btn-primary float-right mt-3" :disabled="processing">
+                <template v-if="processing">
+                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                  <span class="sr-only">Loading...</span>
+                </template>
+                <template v-else> Continue </template>
+              </button>
             </form>
           </ValidationObserver>
         </div>
@@ -93,6 +115,9 @@
 <script>
 //* Imports
 import { mapActions } from 'vuex';
+import AuthService from '@/services/AuthService';
+import AuthenticationAPI from '@/services//API/AuthenticationAPI';
+
 import Email from '@/components/input/Email.vue';
 import Password from '@/components/input/Password.vue';
 import TextInput from '@/components/input/Text.vue';
@@ -112,69 +137,96 @@ export default {
       },
       userRecognized: false,
       userRegistered: false,
+      registrationComplete: false,
       userFirstRegister: false,
       title: 'Sign in to Portal',
       subtitle: null,
-      emailSend: false,
-      nonRegisterdMail: '',
+      error: '',
     };
   },
   methods: {
-    ...mapActions({
-      meet: 'auth/meet',
-    }),
-    //* Submit methods
     async validateEmail() {
-      this.nonRegisterdMail = '';
+      this.processed = true;
+      this.error = '';
 
       const valid = await this.$refs.observer.validate();
       if (!valid) return;
 
-      this.processed = true;
       this.processing = true;
 
-      this.meet(this.formData.email).then((response) => {
-        if (response === 'register') {
-          //! Mock invited user
-          this.userRecognized = true;
-          this.title = 'Nice to meet you!';
-          this.subtitle = 'You were invited to create an account.';
-      } else if (response === 'login') {
-          //! Mock existing user
-          this.userRecognized = true;
-          this.userRegistered = true;
-          this.title = 'Great to see you!';
-          this.subtitle = this.formData.email;
-      } else {
-          //! Mock not allowed user
-          this.nonRegisterdMail = 'This email has no access';
-          this.processed = false;
-        }
-      });
-      this.processing = false;
+      AuthService.meet(this.formData.email)
+        .then((user) => {
+          if (user.isRegistered) {
+            this.processed = false; // Reset validation errors.
+
+            this.userRecognized = true;
+            this.userRegistered = true;
+            this.title = 'Welcome back!';
+            this.subtitle = this.formData.email;
+          } else if (user.hasInvites) {
+            this.processed = false; // Reset validation errors.
+
+            this.userRecognized = true;
+            this.userRegistered = false;
+            this.title = 'Nice to meet you!';
+            this.subtitle = 'You were invited to create an account.';
+          } else { this.error = 'We couldn\'t find an account for this email address.'; }
+        })
+        .catch((error) => {
+          console.error('Cannot meet user.', error);
+        })
+        .finally(() => {
+          this.processing = false;
+        });
     },
 
     async registerPassword() {
+      this.processed = true;
+      this.error = '';
+
       const valid = await this.$refs.observer.validate();
       if (!valid) return;
 
       this.processing = true;
 
-      this.emailSend = true;
+      AuthenticationAPI.register({
+          email: this.formData.email,
+          password: this.formData.password,
+        })
+        .then((response) => {
+          const { error } = response.data;
+          if (error) throw new Error(error.message || 'Unknown error.');
 
-      this.processing = false;
+          this.processed = false; // Reset validation errors.
+          this.registrationComplete = true;
+        })
+        .finally(() => {
+          this.processing = false;
+        });
     },
 
     validatePassword() {
+      this.processed = true;
       this.processing = true;
+      this.error = '';
 
-      // check if profile exists else inputs with name
-      this.title = 'We would love to know your name,';
-      this.subtitle = 'so we can address you more appropriately.';
-      this.userFirstRegister = true;
+      this.authenticate({
+          email: this.formData.email,
+          password: this.formData.password,
+        })
+        .then(() => {
+          this.userFirstRegister = true;
+          this.title = 'We would love to know your name,';
+          this.subtitle = 'so we can address you more appropriately.';
+        })
+        .catch(error => {
+          this.error = error.message;
+          throw error;
+        });
 
       this.processing = false;
     },
+
     async registerName() {
       const valid = await this.$refs.observer.validate();
       if (!valid) return;
@@ -193,10 +245,14 @@ export default {
       this.userFirstRegister = false;
       this.title = 'Sign in to Portal';
       this.subtitle = '';
-      this.emailSend = false;
+      this.registrationComplete = false;
 
       this.processing = false;
     },
+
+    ...mapActions({
+      authenticate: 'auth/authenticate',
+    }),
   },
 };
 </script>
