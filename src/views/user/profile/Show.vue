@@ -52,7 +52,10 @@
       </div>
     </div>
 
-    <hr class="my-5"/>
+    <hr class="mt-5 mb-3"/>
+    <p>
+      <router-link class="text-danger" to="/auth/logout">Logout</router-link>
+    </p>
 
   </div>
 </template>
