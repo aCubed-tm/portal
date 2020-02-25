@@ -28,7 +28,7 @@ export default {
     },
 
     [SET_LOGGED_IN_USER_PROFILE](_state, user) {
-      _state.loggedInUser = user;
+      _state.loggedInUser.profile = user;
     },
 
     [UNSET_LOGGED_IN_USER](_state) {
@@ -43,28 +43,17 @@ export default {
   },
 
   actions: {
-    meet({ commit }, email) {
-      return AuthService.meet(email)
-        .then((authResponse) => {
-          if (authResponse.invites.length > 0) {
-            commit(SET_INVITES, authResponse.invites);
-          }
-          // if has uuid go to login, if has invites go to register else say no access
-          if (authResponse.uuid) {
-            return 'login';
-          }
-            return authResponse.invites.length > 0 ? 'register' : 'error';
-        });
-    },
     authenticate({ commit }, credentials) {
       return AuthService.login(credentials)
         .then((authResponse) => {
-          const { uuid } = authResponse.data.value;
-          commit(SET_LOGGED_IN_USER_UUID, uuid);
+          const { token } = authResponse.data.data;
+          const tokenPayload = JwtDecode(token);
 
-          ProfileAPI.getWhereUuid({ uuid })
+          commit(SET_LOGGED_IN_USER_UUID, tokenPayload.uuid);
+
+          ProfileAPI.getWhereUserUuid({ uuid: tokenPayload.uuid })
             .then((profileResponse) => {
-              commit(SET_LOGGED_IN_USER_PROFILE, profileResponse.data.value);
+              commit(SET_LOGGED_IN_USER_PROFILE, profileResponse.data.data);
             });
         });
     },
@@ -77,9 +66,19 @@ export default {
       const token = JWTService.getToken();
       const tokenPayload = JwtDecode(token);
 
-      return ProfileAPI.getWhereUuid({ uuid: tokenPayload.uuid })
+      commit(SET_LOGGED_IN_USER_UUID, tokenPayload.uuid);
+
+      return ProfileAPI.getWhereUserUuid({ uuid: tokenPayload.uuid })
         .then((profileResponse) => {
-          commit(SET_LOGGED_IN_USER_PROFILE, profileResponse.data);
+          commit(SET_LOGGED_IN_USER_PROFILE, profileResponse.data.data);
+        })
+        .catch(() => { AuthService.logout(); });
+    },
+
+    loadProfile({ commit }, uuid) {
+      return ProfileAPI.getWhereUserUuid({ uuid })
+        .then((profileResponse) => {
+          commit(SET_LOGGED_IN_USER_PROFILE, profileResponse.data.data);
         })
         .catch(() => { AuthService.logout(); });
     },

@@ -1,37 +1,42 @@
 import axios from 'axios';
 
 export default {
-  getAuthorizationToken(data) {
+  meet(data) {
+    return axios({
+      method: 'post',
+      url: 'auth/meet',
+      data,
+    });
+  },
+
+  authenticate(data) {
     return axios({
       method: 'post',
       url: 'auth/authenticate',
       data,
     });
   },
-  meet(data) {
+
+  register(data) {
     return axios({
-      method: 'most',
-      url: 'auth/meet',
+      method: 'post',
+      url: 'auth/register',
       data,
     });
+  },
 
-    /* testdata
-    const returnvalue = new Promise(
-      (resolve) => {
-        const returndata = {
-          data: {
-            data: {
-              // uuid: '<0x1>',
-              // invites: [{ email: data, sentat: '2020-02-10', organisation: '<0x3>' }],
-              invites: [],
-              data,
-            },
-          },
-        };
-        resolve(returndata);
-      },
-    );
-    return returnvalue;
-    /* */
+  close() {
+    return axios({
+      method: 'get',
+      url: 'auth/close',
+    });
+  },
+
+  logout(data) {
+    return axios({
+      method: 'post',
+      url: 'auth/logout',
+      data,
+    });
   },
 };
