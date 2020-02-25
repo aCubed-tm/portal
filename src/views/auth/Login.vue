@@ -255,7 +255,7 @@ export default {
             this.loggedInUser.profile
             && 'firstName' in this.loggedInUser.profile
             && 'firstName' in this.loggedInUser.profile
-          ) this.$router.push('/');
+          ) window.location.href = '/'; // Force reload.
           else this.requireProfileSetup();
         })
         .catch(error => {
@@ -291,7 +291,7 @@ export default {
       })
         .then(() => {
           this.loadProfile(this.loggedInUser.uuid).then(() => {
-            this.$router.push('/');
+            window.location.href = '/'; // Force reload.
           });
         })
         .catch(error => {
