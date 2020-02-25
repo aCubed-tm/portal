@@ -21,7 +21,7 @@
       :disabled="disabled" :readonly="readonly">
 
     <transition name="fadeY">
-      <div v-if="error" class="float-left text-secondary w-100" id="error">
+      <div v-if="error && showError" class="float-left text-secondary w-100 text-danger small mt-2" id="error">
         <p>{{error}}</p>
       </div>
     </transition>
@@ -64,6 +64,9 @@ export default {
     },
     error: {
       default: false,
+    },
+    showError: {
+      default: true,
     },
   },
   methods: {
