@@ -12,102 +12,128 @@
 
   h1 { font-size: 22px; }
   form {
+    margin-left: auto;
+    margin-right: auto;
     width: 80vw;
     @media screen and (min-width:350px){
       width: 330px;
     }
   }
+
 </style>
 
 <template>
   <div id="wrapper" class="text-white">
     <div class="container-fluid d-flex justify-content-center align-items-center">
       <div class="pt-2 pb-5">
-        <header class="mb-4 text-center">
-          <h1>{{title}}</h1>
-          <p v-if="subtitle" class="mt-1">{{ subtitle }}</p>
-        </header>
-
         <div v-if="!registrationComplete">
+
+          <header class="mb-4 text-center">
+            <h1>{{title}}</h1>
+            <p v-if="subtitle" class="mt-1">{{ subtitle }}</p>
+          </header>
+
           <ValidationObserver ref="observer">
-            <form v-if="!userRecognized" @submit.prevent="validateEmail"
-            novalidate>
-              <ValidationProvider name="email" rules="required|email" v-slot="{ errors }">
-                <email v-model="formData.email" label="Your email address"
-                  placeholder="john.doe@example.com" :show-error="processed"
-                  :error="error || errors[0]"/>
-              </ValidationProvider>
 
-              <button type="submit" class="btn btn-primary float-right mt-3" :disabled="processing">
-                <template v-if="processing">
-                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                  <span class="sr-only">Loading...</span>
-                </template>
-                <template v-else> Continue </template>
-              </button>
-            </form>
+            <transition name="expandY">
+              <template v-if="!userRecognized">
+                <form @submit.prevent="validateEmail" novalidate>
+                  <ValidationProvider name="email" rules="required|email" v-slot="{ errors }">
+                    <email v-model="formData.email" label="Your email address"
+                      placeholder="john.doe@example.com" :show-error="processed"
+                      :error="error || errors[0]"/>
+                  </ValidationProvider>
 
-            <form v-if="userRecognized && !userRegistered"
-            @submit.prevent="registerPassword" novalidate>
-              <a class="float-right text-primary small pt-1" @click.prevent="goBack" href="#change-email">Change</a>
+                  <button type="submit" class="btn btn-primary float-right mt-3" :disabled="processing">
+                    <template v-if="processing">
+                      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      <span class="sr-only">Loading...</span>
+                    </template>
+                    <template v-else> Continue </template>
+                  </button>
+                </form>
+              </template>
+            </transition>
 
-              <email label="Your email address" class="mb-3" disabled=true
-                :placeholder="formData.email"/>
+            <transition name="expandY">
+              <template v-if="userRecognized && !userRegistered">
+                <form @submit.prevent="registerPassword" novalidate>
+                  <a class="float-right text-primary small pt-1" @click.prevent="goBack"
+                    href="#change-email">Change</a>
 
-              <ValidationProvider name="password" rules="required|min:8" v-slot="{ errors }">
-                <password v-model="formData.password" label="Your password"
-                  placeholder="Create your password" :show-error="processed"
-                  :error="errors[0]"/>
-              </ValidationProvider>
+                  <email label="Your email address" class="mb-3" disabled=true
+                    :placeholder="formData.email"/>
 
-              <button type="submit" class="btn btn-primary float-right mt-3" :disabled="processing">
-                <template v-if="processing">
-                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                  <span class="sr-only">Loading...</span>
-                </template>
-                <template v-else> Register </template>
-              </button>
-            </form>
+                  <ValidationProvider name="password" rules="required|min:8" v-slot="{ errors }">
+                    <password v-model="formData.password" label="Your password"
+                      placeholder="Create your password" :show-error="processed"
+                      :error="errors[0]"/>
+                  </ValidationProvider>
 
-            <form v-if="userRecognized && userRegistered && !userFirstRegister"
-            @submit.prevent="validatePassword" novalidate>
-              <password v-model="formData.password" label="Your password"
-                :show-error="processed" placeholder="Enter your password"
-                :error="error"/>
+                  <button type="submit" class="btn btn-primary float-right mt-3" :disabled="processing">
+                    <template v-if="processing">
+                      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      <span class="sr-only">Loading...</span>
+                    </template>
+                    <template v-else> Register </template>
+                  </button>
+                </form>
+              </template>
+            </transition>
 
-              <button type="submit" class="btn btn-primary float-right mt-3" :disabled="processing">
-                <template v-if="processing">
-                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                  <span class="sr-only">Loading...</span>
-                </template>
-                <template v-else> Login </template>
-              </button>
-            </form>
+            <transition name="expandY">
+              <template v-if="userRecognized && userRegistered && !userFirstRegister">
+                <form @submit.prevent="validatePassword" novalidate>
+                  <password v-model="formData.password" label="Your password"
+                    :show-error="processed" placeholder="Enter your password"
+                    :error="error"/>
 
-            <form v-if="userRecognized && userRegistered && userFirstRegister"
-            @submit.prevent="registerName" novalidate>
-              <ValidationProvider name="firstname" rules="required" v-slot="{ errors }">
-                <textInput v-model="formData.firstname" label="Your firstname"
-                  placeholder="Enter your firstname" :error="errors[0]"/>
-              </ValidationProvider>
+                  <button type="submit" class="btn btn-primary float-right mt-3" :disabled="processing">
+                    <template v-if="processing">
+                      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      <span class="sr-only">Loading...</span>
+                    </template>
+                    <template v-else> Login </template>
+                  </button>
+                </form>
+              </template>
+            </transition>
 
-              <ValidationProvider name="lastname" rules="required" v-slot="{ errors }">
-                <textInput v-model="formData.name" label="Your lastname"
-                  placeholder="Enter your lastname" :error="errors[0]"/>
-              </ValidationProvider>
+            <transition name="expandY">
+              <template v-if="userRecognized && userRegistered && userFirstRegister">
+                <form @submit.prevent="registerName" novalidate>
+                  <ValidationProvider name="firstname" rules="required" v-slot="{ errors }">
+                    <textInput v-model="formData.firstname" label="Your firstname"
+                      placeholder="Enter your firstname" :show-error="processed"
+                      :error="errors[0]" class="mb-3"/>
+                  </ValidationProvider>
 
-              <button type="submit" class="btn btn-primary float-right mt-3" :disabled="processing">
-                <template v-if="processing">
-                  <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                  <span class="sr-only">Loading...</span>
-                </template>
-                <template v-else> Continue </template>
-              </button>
-            </form>
+                  <ValidationProvider name="lastname" rules="required" v-slot="{ errors }">
+                    <textInput v-model="formData.name" label="Your lastname"
+                      placeholder="Enter your lastname" :show-error="processed"
+                      :error="errors[0]"/>
+                  </ValidationProvider>
+
+                  <button type="submit" class="btn btn-primary float-right mt-3" :disabled="processing">
+                    <template v-if="processing">
+                      <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                      <span class="sr-only">Loading...</span>
+                    </template>
+                    <template v-else> Continue </template>
+                  </button>
+                </form>
+              </template>
+            </transition>
+
           </ValidationObserver>
         </div>
 
         <div v-else class="text-center mt-5">
+          <header class="mb-4 text-center">
+            <h1>Check your inbox.</h1>
+            <p v-if="subtitle" class="mt-1">Verify your email address to login.</p>
+          </header>
+
           <img src="images/mailSent.svg" height="120px" alt="mail sent image"/>
         </div>
       </div>
@@ -218,6 +244,7 @@ export default {
           password: this.formData.password,
         })
         .then(() => {
+          this.processed = false; // Reset validation errors.
           this.userFirstRegister = true;
           this.title = 'We would love to know your name,';
           this.subtitle = 'so we can address you more appropriately.';

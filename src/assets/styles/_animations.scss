@@ -79,11 +79,11 @@
 }
 
 .fadeY-enter-active{
-    animation: fadeInUp 0.5s;
+    animation: fadeInUp .5s;
 
 }
 .fadeY-leave-active {
-    animation: fadeOutDown 0.5s;
+    animation: fadeOutDown .5s;
 }
 
 
@@ -113,34 +113,30 @@
     }
 }
 
-//! Expand Y-axes animation (max element height 50px)
+//! Expand Y-axes animation (max element height 350px)
 .expandY-enter, .expandY-leave-to {
     opacity: 0;
 }
 
 .expandY-enter-active{
-    animation: expandInUp 0.5s;
+    animation: expandInUp .5s ease;
 
 }
 .expandY-leave-active {
-    animation: expandOutDown 0.5s;
+    animation: expandOutDown .25s ease;
 }
 
 @keyframes expandInUp {
     from {
         opacity: 0;
-        -webkit-transform: translate3d(0, 20%, 0);
-        transform: translate3d(0, 20%, 0);
         overflow: hidden;
         max-height: 0;
     }
 
     to {
         opacity: 1;
-        -webkit-transform: translate3d(0, 0, 0);
-        transform: translate3d(0, 0, 0);
         overflow: hidden;
-        max-height: 50px;
+        max-height: 350px;
     }
 }
 
@@ -148,13 +144,11 @@
     from {
         opacity: 1;
         overflow: hidden;
-        max-height: 50px;
+        max-height: 350px;
     }
 
     to {
         opacity: 0;
-        -webkit-transform: translate3d(0, 20%, 0);
-        transform: translate3d(0, 20%, 0);
         overflow: hidden;
         max-height: 0;
     }
