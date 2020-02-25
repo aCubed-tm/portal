@@ -86,6 +86,7 @@
     animation: fadeOutDown 0.5s;
 }
 
+
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -111,6 +112,54 @@
         transform: translate3d(0, 20%, 0);
     }
 }
+
+//! Expand Y-axes animation (max element height 50px)
+.expandY-enter, .expandY-leave-to {
+    opacity: 0;
+}
+
+.expandY-enter-active{
+    animation: expandInUp 0.5s;
+
+}
+.expandY-leave-active {
+    animation: expandOutDown 0.5s;
+}
+
+@keyframes expandInUp {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 20%, 0);
+        transform: translate3d(0, 20%, 0);
+        overflow: hidden;
+        max-height: 0;
+    }
+
+    to {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+        overflow: hidden;
+        max-height: 50px;
+    }
+}
+
+@keyframes expandOutDown {
+    from {
+        opacity: 1;
+        overflow: hidden;
+        max-height: 50px;
+    }
+
+    to {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 20%, 0);
+        transform: translate3d(0, 20%, 0);
+        overflow: hidden;
+        max-height: 0;
+    }
+}
+
 
 //! Fade Y-axes animation searchbar
 .fadeYS-enter, .fadeYS-leave-to {

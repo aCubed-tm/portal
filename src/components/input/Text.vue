@@ -6,7 +6,7 @@
       @focus="$emit('focus')" @blur="$emit('blur')"
       :disabled="disabled" :readonly="readonly">
 
-    <transition name="fadeY">
+    <transition name="expandY">
       <div v-if="error && showError" class="float-left text-secondary w-100 text-danger small mt-2" id="error">
         <p>{{error}}</p>
       </div>
