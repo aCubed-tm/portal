@@ -58,7 +58,7 @@
             <transition name="expandY">
               <template v-if="userRecognized && !userRegistered">
                 <form @submit.prevent="registerPassword" novalidate>
-                  <a class="float-right text-primary small pt-1" @click.prevent="goBack"
+                  <a class="float-right text-primary small pt-1" @click.prevent="restart"
                     href="#change-email">Change</a>
 
                   <email label="Your email address" class="mb-3" disabled=true
@@ -82,7 +82,7 @@
             </transition>
 
             <transition name="expandY">
-              <template v-if="userRecognized && userRegistered && !userFirstRegister">
+              <template v-if="userRecognized && userRegistered && !requiresProfileSetup">
                 <form @submit.prevent="validatePassword" novalidate>
                   <password v-model="formData.password" label="Your password"
                     :show-error="processed" placeholder="Enter your password"
@@ -100,8 +100,8 @@
             </transition>
 
             <transition name="expandY">
-              <template v-if="userRecognized && userRegistered && userFirstRegister">
-                <form @submit.prevent="registerName" novalidate>
+              <template v-if="userRecognized && userRegistered && requiresProfileSetup">
+                <form @submit.prevent="createProfile" novalidate>
                   <ValidationProvider name="firstname" rules="required" v-slot="{ errors }">
                     <textInput v-model="formData.firstname" label="Your firstname"
                       placeholder="Enter your firstname" :show-error="processed"
@@ -143,9 +143,10 @@
 
 <script>
 //* Imports
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import AuthService from '@/services/AuthService';
-import AuthenticationAPI from '@/services//API/AuthenticationAPI';
+import AuthenticationAPI from '@/services/API/AuthenticationAPI';
+import ProfileAPI from '@/services/API/ProfileAPI';
 
 import Email from '@/components/input/Email.vue';
 import Password from '@/components/input/Password.vue';
@@ -167,12 +168,19 @@ export default {
       userRecognized: false,
       userRegistered: false,
       registrationComplete: false,
-      userFirstRegister: false,
+      requiresProfileSetup: false,
       title: 'Sign in to Portal',
       subtitle: null,
       error: '',
     };
   },
+
+  computed: {
+    ...mapState({
+      loggedInUser: state => state.auth.loggedInUser,
+    }),
+  },
+
   methods: {
     async validateEmail() {
       this.processed = true;
@@ -187,14 +195,12 @@ export default {
         .then((user) => {
           if (user.isRegistered) {
             this.processed = false; // Reset validation errors.
-
             this.userRecognized = true;
             this.userRegistered = true;
             this.title = 'Welcome back!';
             this.subtitle = this.formData.email;
           } else if (user.hasInvites) {
             this.processed = false; // Reset validation errors.
-
             this.userRecognized = true;
             this.userRegistered = false;
             this.title = 'Nice to meet you!';
@@ -245,9 +251,12 @@ export default {
         })
         .then(() => {
           this.processed = false; // Reset validation errors.
-          this.userFirstRegister = true;
-          this.title = 'We would love to know your name,';
-          this.subtitle = 'so we can address you more appropriately.';
+          if (
+            this.loggedInUser.profile
+            && 'firstName' in this.loggedInUser.profile
+            && 'firstName' in this.loggedInUser.profile
+          ) this.$router.push('/');
+          else this.requireProfileSetup();
         })
         .catch(error => {
           this.error = error.message;
@@ -257,31 +266,53 @@ export default {
       this.processing = false;
     },
 
-    async registerName() {
+    requireProfileSetup() {
+      this.requiresProfileSetup = true;
+      this.title = 'We would love to know your name,';
+      this.subtitle = 'so we can address you more appropriately.';
+    },
+
+    async createProfile() {
+      this.processed = true;
+      this.error = '';
+
       const valid = await this.$refs.observer.validate();
       if (!valid) return;
 
       this.processing = true;
 
-      this.processing = false;
+      ProfileAPI.createWhereUserUuid({
+        uuid: this.loggedInUser.uuid,
+        data: {
+          firstname: this.formData.firstname,
+          name: this.formData.name,
+          description: '',
+        },
+      })
+        .then(() => {
+          this.loadProfile(this.loggedInUser.uuid).then(() => {
+            this.$router.push('/');
+          });
+        })
+        .catch(error => {
+          throw error;
+        });
     },
 
-    //* Other buttons methods
-    goBack() {
-      this.processing = true;
-
+    restart() {
+      this.processing = false;
       this.userRecognized = false;
       this.userRegistered = false;
-      this.userFirstRegister = false;
-      this.title = 'Sign in to Portal';
-      this.subtitle = '';
+      this.requiresProfileSetup = false;
       this.registrationComplete = false;
 
-      this.processing = false;
+      this.title = 'Sign in to Portal';
+      this.subtitle = '';
     },
 
     ...mapActions({
       authenticate: 'auth/authenticate',
+      loadProfile: 'auth/loadProfile',
     }),
   },
 };

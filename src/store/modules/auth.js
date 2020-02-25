@@ -75,6 +75,14 @@ export default {
         .catch(() => { AuthService.logout(); });
     },
 
+    loadProfile({ commit }, uuid) {
+      return ProfileAPI.getWhereUserUuid({ uuid })
+        .then((profileResponse) => {
+          commit(SET_LOGGED_IN_USER_PROFILE, profileResponse.data.data);
+        })
+        .catch(() => { AuthService.logout(); });
+    },
+
     logout({ commit }) {
       AuthService.logout();
       commit(UNSET_LOGGED_IN_USER);
