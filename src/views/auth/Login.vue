@@ -49,12 +49,15 @@
 
             <form v-if="userRecognized && !userRegistered"
             @submit.prevent="registerPassword" novalidate>
-              <email label="Your email address" disabled=true change=true @go-back="goBack"
+              <a class="float-right text-primary small pt-1" @click.prevent="goBack" href="#change-email">Change</a>
+
+              <email label="Your email address" class="mb-3" disabled=true
                 :placeholder="formData.email"/>
 
               <ValidationProvider name="password" rules="required|min:8" v-slot="{ errors }">
                 <password v-model="formData.password" label="Your password"
-                  placeholder="Create your password" :error="errors[0]"/>
+                  placeholder="Create your password" :show-error="processed"
+                  :error="errors[0]"/>
               </ValidationProvider>
 
               <button type="submit" class="btn btn-primary float-right mt-3" :disabled="processing">
@@ -130,7 +133,7 @@ export default {
       processed: false,
       processing: false,
       formData: {
-        email: '',
+        email: 'martijn.driesen@mail.be',
         password: '',
         firstname: '',
         name: '',

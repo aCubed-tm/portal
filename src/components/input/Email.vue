@@ -12,9 +12,6 @@
 <template>
   <div class="form-group">
     <label v-if="label" :for="id" v-html="label"></label>
-    <div v-if="change" class="float-right text-primary" id="change" v-on:click="goBack">
-      <p>Change</p>
-    </div>
 
     <input :id="id" type="email" class="form-control" :placeholder="placeholder"
       :value="localValue" @input="updateLocalValue($event)"
@@ -59,19 +56,11 @@ export default {
     readonly: {
       default: false,
     },
-    change: {
-      default: false,
-    },
     error: {
       default: false,
     },
     showError: {
       default: true,
-    },
-  },
-  methods: {
-    goBack() {
-        this.$emit('go-back');
     },
   },
 };
