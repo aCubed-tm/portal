@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+import AuthService from '@/services/AuthService';
+
 import profileChildren from '@/views/user/_routes';
 import organisationChildren from '@/views/organisation/_routes';
 import adminChildren from '@/views/admin/_routes';
@@ -12,26 +14,31 @@ function lazyLoad(view) {
 }
 
 const authGuard = (to, from, next) => {
-  next('/auth');
+  next(AuthService.isLoggedIn() ? true : '/auth');
 };
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: lazyLoad('user/Show'),
+    redirect: '/map',
     beforeEnter: authGuard,
   },
   {
     path: '/auth',
     name: 'auth',
     component: lazyLoad('auth/Login'),
+    beforeEnter: (to, from, next) => {
+      next(!AuthService.isLoggedIn() ? true : '/');
+    },
   },
   {
     path: '/auth/reset-password',
     name: 'passwordReset',
     component: lazyLoad('auth/PasswordReset'),
-    // beforeEnter: authGuard
+    beforeEnter: (to, from, next) => {
+      next(!AuthService.isLoggedIn() ? true : '/');
+    },
   },
   {
     path: '/user/',
@@ -39,7 +46,7 @@ const routes = [
     component: lazyLoad('user/Show'),
     redirect: '/user/profile',
     children: profileChildren,
-    // beforeEnter: authGuard
+    beforeEnter: authGuard,
   },
   {
     path: '/organisation/',
@@ -47,7 +54,7 @@ const routes = [
     component: lazyLoad('organisation/Show'),
     redirect: '/organisation/overview',
     children: organisationChildren,
-    // beforeEnter: authGuard
+    beforeEnter: authGuard,
   },
   {
     path: '/admin/',
@@ -55,17 +62,27 @@ const routes = [
     component: lazyLoad('admin/Show'),
     redirect: '/admin/overview',
     children: adminChildren,
-    // beforeEnter: authGuard
+    beforeEnter: authGuard,
   },
   {
     path: '/map',
     name: 'map',
     component: lazyLoad('map/Show'),
+    beforeEnter: authGuard,
   },
   {
     path: '*',
-    name: 'error',
+    name: 'error.404',
     component: lazyLoad('error/404'),
+  },
+  {
+    path: '/auth/logout',
+    name: 'logout',
+    beforeEnter: (to, from, next) => {
+      AuthService.logout().finally(() => {
+        next('/');
+      });
+    },
   },
 ];
 
