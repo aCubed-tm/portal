@@ -1,7 +1,7 @@
 <template>
   <div class="form-group">
     <label v-if="label" :for="id" v-html="label"></label>
-    <select class="custom-select" id="inputGroupSelect01">
+    <select :disabled="disabled" class="custom-select" id="inputGroupSelect01">
       <slot/>
     </select>
 

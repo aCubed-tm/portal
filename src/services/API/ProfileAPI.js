@@ -22,4 +22,11 @@ export default {
       data,
     });
   },
+
+  getEmailsWhereUserUuid({ uuid }) {
+    return axios({
+      method: 'get',
+      url: `profile/user/${uuid}/emails`,
+    });
+  },
 };

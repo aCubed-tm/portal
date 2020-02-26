@@ -24,9 +24,9 @@ export default {
   data() {
     return {
       organisations: [
-        { uuid: 1, name: 'Dapibus ac facilisis in', isAdmin: false },
-        { uuid: 2, name: 'Cras justo odio', isAdmin: true },
-        { uuid: 3, name: 'Vestibulum at eros', isAdmin: false },
+        // { uuid: 1, name: 'Dapibus ac facilisis in', isAdmin: false },
+        // { uuid: 2, name: 'Cras justo odio', isAdmin: true },
+        // { uuid: 3, name: 'Vestibulum at eros', isAdmin: false },
       ],
     };
   },

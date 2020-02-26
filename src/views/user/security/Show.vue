@@ -18,23 +18,32 @@
 
     <hr class="my-5"/>
 
-    <h2 class="h4 m-0">Sessions</h2>
-    <p class="text-muted mt-1 mb-4">
-      This is a list of all devices on which you're possibly still logged in.
-    </p>
+    <div class="position-relative">
+      <p class="h4 text-center text-black-50 position-absolute w-100 pt-5 mt-4">
+        <i class="fas fa-exclamation-triangle pr-2"></i> Not implemented
+      </p>
 
-    <ul class="list-group">
-      <li v-for="session in sessions" :key="`434_session_${session.tokenHash}`"
-        class="list-group-item d-flex align-items-center">
+      <div style="opacity:.3; pointer-events: none;">
+        <h2 class="h4 m-0">Sessions</h2>
 
-        <div class="flex-grow-1">
-          <p class="font-weight-bold mb-0"><i class="fas fa-globe-europe mr-1"></i> {{ session.ip }}</p>
-          <p v-if="session.tokenHash == '123'" class="small m-0 text-muted">Your current session.</p>
-        </div>
+        <p class="text-muted mt-1 mb-4">
+          This is a list of all devices on which you're possibly still logged in.
+        </p>
 
-        <button class="ml-5" @click="closeSession(email)"><i class="fas fa-trash-alt text-danger"></i></button>
-      </li>
-    </ul>
+        <ul class="list-group">
+          <li v-for="session in sessions" :key="`434_session_${session.tokenHash}`"
+            class="list-group-item d-flex align-items-center">
+
+            <div class="flex-grow-1">
+              <p class="font-weight-bold mb-0"><i class="fas fa-globe-europe mr-1"></i> {{ session.ip }}</p>
+              <p v-if="session.tokenHash == null" class="small m-0 text-muted">Your current session.</p>
+            </div>
+
+            <button class="ml-5" @click="closeSession(email)"><i class="fas fa-trash-alt text-danger"></i></button>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -47,8 +56,7 @@ export default {
   data() {
     return {
       sessions: [
-        { ip: '192.168.1.1', tokenHash: '123' },
-        { ip: '172.0.0.1', tokenHash: '234' },
+        { ip: 'session', tokenHash: null },
       ],
     };
   },

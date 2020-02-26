@@ -17,10 +17,15 @@
           </p>
         </div>
 
-        <button v-if="!email.isPrimary" @click="makePrimary(email)"
-          class="btn btn-light shadow-sm btn-sm">Make primary</button>
+        <div v-tooltip.top-center="'Not implemented.'">
+          <button disabled v-if="!email.isPrimary" @click="makePrimary(email)"
+            class="btn btn-light shadow-sm btn-sm">Make primary</button>
+        </div>
 
-        <button class="ml-5" @click="deleteEmail(email)"><i class="fas fa-trash-alt text-danger"></i></button>
+        <div v-tooltip.right="'Not implemented.'">
+          <button disabled
+            class="ml-5" @click="deleteEmail(email)"><i class="fas fa-trash-alt text-muted"></i></button>
+        </div>
       </li>
     </ul>
 
@@ -28,14 +33,14 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
+import ProfileAPI from '@/services/API/ProfileAPI';
+
 export default {
   data() {
     return {
-      emails: [
-        { emailAddress: 'r0699180@student.thomasmore.be', isPrimary: false },
-        { emailAddress: 'hi@lenny.kr', isPrimary: true },
-        { emailAddress: 'lenny.kraaijenhof@gmail.com', isPrimary: false },
-      ],
+      emails: [],
     };
   },
 
@@ -43,11 +48,34 @@ export default {
     sortedEmails() {
       return this.emails.concat().sort((a) => a.isPrimary ? -1 : 1);
     },
+
+    ...mapState({
+      loggedInUser: state => state.auth.loggedInUser,
+    }),
   },
 
   methods: {
     makePrimary() {},
-    deleteEmail() { },
+    deleteEmail() {},
+    loadEmails() {
+      ProfileAPI.getEmailsWhereUserUuid({ uuid: this.loggedInUser.uuid })
+        .then(response => {
+          const { error, data } = response.data;
+          if (error) throw new Error(error.message || 'Unknown error.');
+
+          this.emails = data;
+        });
+    },
+  },
+
+  watch: {
+    loggedInUser() {
+      this.loadEmails();
+    },
+  },
+
+  mounted() {
+    this.loadEmails();
   },
 };
 </script>
