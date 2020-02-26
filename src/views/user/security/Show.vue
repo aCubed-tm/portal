@@ -1,29 +1,31 @@
 <template>
   <div>
-    <p class="breadcrumbs small text-muted mb-2">User / Security</p>
-    <h1 class="m-0 h3">Account Security</h1>
-
-    <h2 class="h4 mt-5 mb-4">Change your password</h2>
-    <form @submit.prevent>
-      <div style="background: var(--highlighted);" class="p-3 rounded-lg mb-2">
-        <password-field label="Old password" placeholder="Type your old password for confirmation."></password-field>
-        <password-field label="New password" class="mt-3"></password-field>
-        <p class="small mt-1 mb-0 text-muted">
-          Make sure it's at least 15 characters OR at least 8 characters including a number and a lowercase letter.
-        </p>
-
-        <button class="btn btn-danger mt-3">Update and logout everywhere</button>
-      </div>
-    </form>
-
-    <hr class="my-5"/>
-
     <div class="position-relative">
-      <p class="h4 text-center text-black-50 position-absolute w-100 pt-5 mt-4">
+      <p class="h4 text-center text-black-50 position-absolute w-100" style="margin-top:35vh;">
         <i class="fas fa-exclamation-triangle pr-2"></i> Not implemented
       </p>
 
       <div style="opacity:.3; pointer-events: none;">
+        <p class="breadcrumbs small text-muted mb-2">User / Security</p>
+        <h1 class="m-0 h3">Account Security</h1>
+
+        <h2 class="h4 mt-5 mb-4">Change your password</h2>
+        <form @submit.prevent>
+          <div style="background: var(--highlighted);" class="p-3 rounded-lg mb-2">
+            <password-field label="Old password"
+              placeholder="Type your old password for confirmation."></password-field>
+            <password-field label="New password" class="mt-3"></password-field>
+            <p class="small mt-1 mb-0 text-muted">
+              Make sure it's at least 15 characters OR at least
+               8 characters including a number and a lowercase letter.
+            </p>
+
+            <button class="btn btn-danger mt-3">Update and logout everywhere</button>
+          </div>
+        </form>
+
+        <hr class="my-5"/>
+
         <h2 class="h4 m-0">Sessions</h2>
 
         <p class="text-muted mt-1 mb-4">
