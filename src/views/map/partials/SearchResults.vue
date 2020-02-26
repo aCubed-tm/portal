@@ -20,17 +20,17 @@
                         <b>{{object.name}}</b>
 
                         <live-icon
-                          v-if="Math.abs(object.timestamps[0].timestamp.diff(time)) < 60000"
+                          v-if="Math.abs(new Date()) < 60000"
                           class="live-icon">
                         </live-icon>
 
                         <i v-else class="fas fa-exclamation-circle pl-2 small text-black-50"></i>
                         <span class="text-muted small text-lowercase float-right">
-                          {{object.timestamps[0].timestamp.from(time)}}
+                          TIME
                         </span>
                     </div>
                     <span class="small">
-                      Located at {{object.timestamps[0].x}} {{object.timestamps[0].y}}
+                      Located at TIME
                     </span>
               </li>
             </a>
@@ -67,11 +67,9 @@ export default {
 
     computed: {
         filteredList() {
-            return this.objects.filter(object => {
-                let objectList = object.name.toLowerCase().includes(this.query.toLowerCase());
-                objectList += object.type.toLowerCase().includes(this.query.toLowerCase());
-                return objectList;
-            });
+            return this.objects.filter(
+              object => object.name.toLowerCase().includes(this.query.toLowerCase()),
+            );
         },
     },
 

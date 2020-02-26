@@ -87,7 +87,7 @@ export default {
       showSelector: false,
       activeOrganisationUuid: 0,
       organisations: [
-        { name: 'Developers', uuid: 0 },
+        { name: 'All organisations', uuid: 0 },
       ],
     };
   },
