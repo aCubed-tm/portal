@@ -4,6 +4,12 @@
   #content {
     border-left: 1px solid rgb(245, 245, 248);
   }
+
+  .router-link-disabled {
+    opacity: .3;
+    cursor: not-allowed;
+    pointer-events: none !important;
+  }
 </style>
 
 <template>
@@ -16,7 +22,8 @@
           <router-link :to="'/user/profile'" class="nav-link" active-class="active">Profile</router-link>
         </li>
         <li class="nav-item">
-          <router-link :to="'/user/organisations'" class="nav-link" active-class="active">Organisations</router-link>
+          <router-link disabled class="nav-link router-link-disabled"
+            :to="'/user/organisations'" active-class="active">Organisations</router-link>
         </li>
         <li class="nav-item">
           <router-link :to="'/user/emails'" class="nav-link" active-class="active">Emails</router-link>
