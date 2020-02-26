@@ -4,12 +4,6 @@
   #content {
     border-left: 1px solid rgb(245, 245, 248);
   }
-
-  .router-link-disabled {
-    opacity: .3;
-    cursor: not-allowed;
-    pointer-events: none !important;
-  }
 </style>
 
 <template>

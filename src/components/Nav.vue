@@ -82,14 +82,15 @@
         </router-link>
       </section>
       <section class="bottom-links">
-        <router-link :to="'/organisation'"
-          class="org-settings rounded-circle d-flex justify-content-center align-items-center mb-3">
+        <router-link disabled :to="'/organisation'"
+          class="org-settings rounded-circle d-flex justify-content-center
+          align-items-center mb-3 router-link-disabled">
           <i class="fas fa-cog"></i>
         </router-link>
 
         <router-link :to="'/user'"
-          class="profile rounded-circle bg-primary d-flex justify-content-center align-items-center">
-            L
+          class="profile rounded-circle bg-primary d-flex justify-content-center align-items-center text-uppercase">
+            {{ loggedInUser.profile ? loggedInUser.profile.firstName.charAt(0) : 'U' }}
         </router-link>
       </section>
     </div>
@@ -106,6 +107,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   props: {
     filled: {
@@ -116,6 +119,12 @@ export default {
       required: false,
       default: true,
     },
+  },
+
+  computed: {
+    ...mapState({
+      loggedInUser: state => state.auth.loggedInUser,
+    }),
   },
 };
 </script>
