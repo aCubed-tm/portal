@@ -82,11 +82,13 @@
         </router-link>
       </section>
       <section class="bottom-links">
-        <router-link disabled :to="'/organisation'"
-          class="org-settings rounded-circle d-flex justify-content-center
-          align-items-center mb-3 router-link-disabled">
-          <i class="fas fa-cog"></i>
-        </router-link>
+        <div v-tooltip.center-right="'Not implemented.'">
+          <router-link disabled :to="'/organisation'"
+            class="org-settings rounded-circle d-flex justify-content-center
+            align-items-center mb-3 router-link-disabled">
+            <i class="fas fa-cog"></i>
+          </router-link>
+        </div>
 
         <router-link :to="'/user'"
           class="profile rounded-circle bg-primary d-flex justify-content-center align-items-center text-uppercase">

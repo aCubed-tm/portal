@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Vuelidate from 'vuelidate';
+import VTooltip from 'v-tooltip';
 import {
   ValidationObserver,
   ValidationProvider,
@@ -20,9 +21,6 @@ import store from './store';
 // onclick outside
 Vue.directive('on-click-outside', onClickOutside);
 
-// moment
-Vue.use(moment);
-
 // install rules and localization
 Object.keys(rules).forEach(rule => {
   extend(rule, rules[rule]);
@@ -36,6 +34,8 @@ Vue.component('ValidationProvider', ValidationProvider);
 
 Vue.use(Vuex);
 Vue.use(Vuelidate);
+Vue.use(moment);
+Vue.use(VTooltip);
 Vue.config.productionTip = false;
 
 RequestService.init(process.env.VUE_APP_ENDPOINT_EDGE);
