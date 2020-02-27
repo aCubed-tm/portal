@@ -6,9 +6,10 @@
         <div id="map" class="map position-fixed"></div>
     </div>
 </template>
-
+<script>  /* eslint-disable */ </script>
 <script>
 import L from 'leaflet';
+import TrackingAPI from '@/services/API/TrackingAPI';
 
 function xy(x, y) {
     const yx = L.latLng;
@@ -23,11 +24,11 @@ function xy(x, y) {
 export default {
     name: 'map-map',
     data() {
-        return {
-            map: null,
-            markers: null,
-            imageurl: '/images/mapXL.png',
-        };
+      return {
+        map: null,
+        markers: null,
+        imageurl: '/images/mapXL.png',
+      };
     },
     computed: {
         southWest() { return this.map.unproject([0, 1367], 1); },
@@ -50,25 +51,44 @@ export default {
 
             this.updateMarkers();
         },
+
+        rcX(x) {
+          return 1300;
+          // return (x + 1285);
+        },
+
+        rcY(y) {
+          return 1500;
+          // return (y + 648 - 968);
+        },
+
         updateMarkers() {
             this.markers.clearLayers();
 
             if (!this.object) {
                 this.objects.map(
-                    // eslint-disable-next-line max-len
-                    object => this.placeMarker(object.timestamps[0].x, object.timestamps[0].y, (`${object.type } ${ object.name}`)),
+                    object => this.placeMarker(this.rcX(object.lastLocation.x),
+                      this.rcY(object.lastLocation.y), (object.name)),
                 );
             } else {
-                this.object.timestamps.map(
-                    timestamp => this.placeMarker(timestamp.x, timestamp.y, timestamp.timestamp, timestamp.current),
-                );
+              TrackingAPI.getObjectHistoryByUuid({ uuid: this.object.uuid })
+                .then(response => {
+                  const { error, data } = response.data;
+                  if (error) throw new Error(error.message || 'Unknown error.');
 
-                const locations = [];
-                for (let i = 0; i < this.object.timestamps.length; i++) {
-                    locations.push(xy(this.object.timestamps[i].x, this.object.timestamps[i].y));
-                }
+                  const history = data;
 
-                this.markers.addLayer(L.polyline(locations).addTo(this.map));
+                  history.map(
+                      l => this.placeMarker(l.x, l.y, l.time, this.object.lastLocation.x),
+                  );
+
+                  const locations = [];
+                  for (let i = 0; i < history.length; i++) {
+                      locations.push(xy(history[i].x, history[i].y));
+                  }
+
+                  this.markers.addLayer(L.polyline(locations).addTo(this.map));
+                });
             }
         },
         placeMarker(x, y, popup, current = true) {
@@ -96,14 +116,20 @@ export default {
         },
     },
     watch: {
-        object() {
+        objects: {
+          handler() {
             this.updateMarkers();
+          },
+          deep: true,
+        },
+        object: {
+          handler() {
+            this.updateMarkers();
+          },
+          deep: true,
         },
     },
     props: {
-        tracking: {
-            default: false,
-        },
         objects: {
             default: null,
         },

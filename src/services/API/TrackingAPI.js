@@ -8,7 +8,7 @@ export default {
     });
   },
 
-  getObjectByUuid({ uuid }) {
+  getObjectHistoryByUuid({ uuid }) {
     return axios({
       method: 'get',
       url: `tracking/object/${uuid}`,
