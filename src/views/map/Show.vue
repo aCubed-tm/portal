@@ -18,7 +18,7 @@
       </div>
     </nav-bar>
 
-    <map-view :objects="objects" :object="track"/>
+    <map-view :objects="objects" :object="detail"/>
   </div>
 </template>
 
@@ -42,6 +42,7 @@ export default {
           detail: null,
           track: null,
           objects: [],
+          longPuller: null,
         };
     },
     methods: {
@@ -54,18 +55,28 @@ export default {
         this.track = null;
         this.detail = null;
       },
-    },
-    mounted() {
-      TrackingAPI.getAllObjects()
-        .then(response => {
-          const { error, data } = response.data;
-          if (error) throw new Error(error.message || 'Unknown error.');
 
-          this.objects = data;
-          setTimeout(() => {
-            this.initialLoadCompleted = true;
-          }, 500);
-        });
+      refreshObjects() {
+        this.longPuller = setTimeout(() => {
+          TrackingAPI.getAllObjects()
+            .then(response => {
+              const { error, data } = response.data;
+              if (error) throw new Error(error.message || 'Unknown error.');
+
+              this.objects = data;
+              this.initialLoadCompleted = true;
+              this.refreshObjects();
+          });
+        }, 2000);
+      },
+    },
+
+    mounted() {
+      this.refreshObjects();
+    },
+
+    beforeDestroy() {
+      clearTimeout(this.longPuller);
     },
 };
 

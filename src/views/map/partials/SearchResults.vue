@@ -26,11 +26,11 @@
 
                         <i v-else class="fas fa-exclamation-circle pl-2 small text-black-50"></i>
                         <span class="text-muted small text-lowercase float-right">
-                          TIME
+                          RC(x{{Math.round(object.lastLocation.x)}}, y{{Math.round(object.lastLocation.y)}})
                         </span>
                     </div>
                     <span class="small">
-                      Located at TIME
+                      Located {{ moment(object.lastLocation.time).from() }}
                     </span>
               </li>
             </a>
@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import LiveIcon from '@/components/LiveIcon.vue';
 
 export default {
@@ -77,6 +78,8 @@ export default {
         showDetail(object) {
             this.$emit('detail', object);
         },
+
+        moment: (param) => moment(param),
 
         refreshTime() {
           this.time = new Date();
