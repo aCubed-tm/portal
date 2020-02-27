@@ -1,3 +1,6 @@
+DEMO BRANCH -> Niet voltooide features zijn niet meer zichtbaar of bruikbaar in de front-end.
+MASTER BRANCH -> Afgewerkte front-end, geen koppeling met back-end.
+
 [![Netlify Status](https://api.netlify.com/api/v1/badges/fc9011cd-4ee4-4c9a-a4a7-182df7a3a469/deploy-status)](https://app.netlify.com/sites/eager-mccarthy-a94703/deploys)
 
 # portal
